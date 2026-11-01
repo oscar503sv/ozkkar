@@ -39,7 +39,8 @@ const projects = defineCollection({
       /** Lower numbers appear first. */
       order: z.number().default(100),
       categories: z.array(z.enum(PROJECT_CATEGORIES)).min(1),
-      role: z.enum(['author', 'contributor']).default('author'),
+      /** author: my own project · team: built with a team · contributor: open source contribution */
+      role: z.enum(['author', 'team', 'contributor']).default('author'),
       /** Phosphor icon name. Defaults to the icon of the first category. */
       icon: z.string().optional(),
       kind: localized,

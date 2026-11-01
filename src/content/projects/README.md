@@ -8,7 +8,7 @@ este ejemplo en `mi-proyecto.yaml` y ajústalo. El esquema completo está en
 name: Mi proyecto
 order: 10 # menor = aparece antes
 categories: [backend, web] # backend | web | mobile | infra | oss
-role: author # author | contributor
+role: author # author (propio) | team (en equipo) | contributor (open source)
 icon: rocket # opcional: icono de Phosphor (https://phosphoricons.com)
 kind:
   es: API REST de ejemplo

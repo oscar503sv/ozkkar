@@ -1,10 +1,10 @@
 name: Eventos Comunitarios
 order: 5
 categories: [mobile, backend]
-role: author
+role: team
 kind:
-  es: App Android · Proyecto universitario en equipo
-  en: Android app · University team project
+  es: App Android · Proyecto universitario
+  en: Android app · University project
 description:
   es: 'App nativa para que una comunidad organice eventos y confirme asistencia, con historial de participación y estadísticas por usuario. Inicio de sesión con correo, Google o Facebook mediante Firebase Auth, y una API REST en Node.js y MySQL desplegada en Railway.'
   en: 'Native app for a community to organize events and RSVP, with participation history and per-user stats. Sign-in with email, Google or Facebook through Firebase Auth, backed by a Node.js and MySQL REST API deployed on Railway.'

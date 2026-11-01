@@ -20,6 +20,12 @@ interface Props {
 const { project, lang, variant = 'full', headingLevel = 'h3' } = Astro.props;
 const t = useTranslations(lang);
 const { data } = project;
+
+const ROLE_TONES = {
+  author: 'muted',
+  team: 'accent',
+  contributor: 'accent-2',
+} as const satisfies Record<typeof data.role, string>;
 const Heading = headingLevel;
 
 const href = variant === 'compact' ? projectUrl(project) : undefined;
@@ -46,8 +52,8 @@ const links = [
     {variant === 'compact' ? (
       href && <Icon name="arrow-up-right" size={20} class="card__arrow" />
     ) : (
-      <Badge tone={data.role === 'author' ? 'muted' : 'accent-2'} size="sm" weight="medium">
-        {data.role === 'author' ? t.projects.author : t.projects.contributor}
+      <Badge tone={ROLE_TONES[data.role]} size="sm" weight="medium">
+        {t.projects[data.role]}
       </Badge>
     )}
   </div>
