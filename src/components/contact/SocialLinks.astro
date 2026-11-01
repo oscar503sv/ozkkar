@@ -1,0 +1,60 @@
+---
+import Icon from '../ui/Icon.astro';
+import { SOCIALS } from '../../data/site';
+---
+
+<ul class="socials">
+  {SOCIALS.map(({ label, handle, href, icon }) => (
+    <li>
+      <a href={href} target="_blank" rel="noopener noreferrer" class="social">
+        <Icon name={icon} size={20} class="social__icon" />
+        <span class="social__label">{label}</span>
+        <span class="social__handle">{handle}</span>
+        <Icon name="arrow-up-right" size={15} class="social__icon" />
+      </a>
+    </li>
+  ))}
+</ul>
+
+<style>
+  .socials {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .social {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 12px;
+    border-radius: 14px;
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .social:hover {
+    background: var(--surface-2);
+    color: inherit;
+  }
+
+  .social :global(.social__icon) {
+    color: var(--muted);
+  }
+
+  .social__label {
+    flex: 1;
+    min-width: 0;
+    font-size: 15px;
+    font-weight: 500;
+  }
+
+  .social__handle {
+    font-size: 13px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+</style>

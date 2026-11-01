@@ -1,0 +1,85 @@
+---
+import Icon from '../ui/Icon.astro';
+import { SITE } from '../../data/site';
+import { LOCALES, type Lang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="clock" data-local-time data-locale={LOCALES[lang]} data-time-zone={SITE.timeZone}>
+  <span class="clock__icon">
+    <Icon name="clock" size={20} />
+  </span>
+  <span class="clock__text">
+    <time class="clock__time" data-local-time-value>
+      --:--
+    </time>
+    <span class="clock__label">{t.contact.localLabel}</span>
+  </span>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-local-time]');
+  const output = root?.querySelector<HTMLTimeElement>('[data-local-time-value]');
+
+  if (root && output) {
+    const formatter = new Intl.DateTimeFormat(root.dataset.locale, {
+      timeStyle: 'short',
+      timeZone: root.dataset.timeZone,
+    });
+    const tick = () => {
+      const now = new Date();
+      output.textContent = formatter.format(now);
+      output.dateTime = now.toISOString();
+    };
+    tick();
+    window.setInterval(tick, 30_000);
+  }
+</script>
+
+<style>
+  .clock {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 20px;
+    border-radius: 20px;
+    background: var(--surface-2);
+  }
+
+  .clock__icon {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+    color: var(--accent-ink);
+  }
+
+  .clock__text {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    line-height: 1.35;
+  }
+
+  .clock__time {
+    font-family: var(--font-display);
+    font-size: 20px;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .clock__label {
+    font-size: 13px;
+    color: var(--muted);
+  }
+</style>

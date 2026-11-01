@@ -1,0 +1,93 @@
+---
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { SITE } from '../../data/site';
+import type { Lang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="email-card" data-email-card>
+  <span class="email-card__label">{t.contact.direct}</span>
+  <span class="email-card__address">{SITE.email}</span>
+  <div class="email-card__actions">
+    <Button variant="soft" size="sm" data-copy-email={SITE.email} aria-live="polite">
+      <span class="state" data-state="idle">
+        <Icon name="copy" />
+        {t.contact.copy}
+      </span>
+      <span class="state" data-state="done" hidden>
+        <Icon name="check" />
+        {t.contact.copied}
+      </span>
+    </Button>
+    <Button href={`mailto:${SITE.email}`} variant="ghost" size="sm" icon="arrow-square-out">
+      {t.contact.openMail}
+    </Button>
+  </div>
+</div>
+
+<script>
+  import { copyText } from '../../scripts/clipboard';
+
+  const button = document.querySelector<HTMLButtonElement>('[data-copy-email]');
+  let timer: number | undefined;
+
+  button?.addEventListener('click', async () => {
+    if (!(await copyText(button.dataset.copyEmail ?? ''))) return;
+    const idle = button.querySelector<HTMLElement>('[data-state="idle"]')!;
+    const done = button.querySelector<HTMLElement>('[data-state="done"]')!;
+    idle.hidden = true;
+    done.hidden = false;
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      idle.hidden = false;
+      done.hidden = true;
+    }, 1800);
+  });
+</script>
+
+<style>
+  .email-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 24px;
+    border-radius: 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .email-card__label {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--muted);
+  }
+
+  .email-card__address {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 20px;
+    letter-spacing: -0.01em;
+    overflow-wrap: anywhere;
+  }
+
+  .email-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .state {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+</style>
