@@ -1,0 +1,7 @@
+dist
+.vercel
+.astro
+node_modules
+package-lock.json
+design_handoff_ozkkar_dev
+src/content/blog
