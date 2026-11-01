@@ -82,10 +82,19 @@ const t = useTranslations(lang);
     flex-direction: column;
     gap: 10px;
     padding: 12px clamp(16px, 4vw, 32px);
-    background: color-mix(in oklch, var(--bg) 86%, transparent);
-    -webkit-backdrop-filter: blur(14px);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
+    background: var(--glass-sheen), var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow:
+      0 1px 0 var(--glass-edge),
+      0 8px 32px -12px var(--glass-edge);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .mobile-header {
+      background: color-mix(in oklch, var(--bg) 92%, transparent);
+    }
   }
 
   @media (min-width: 960px) {
@@ -113,7 +122,7 @@ const t = useTranslations(lang);
     display: flex;
     padding: 3px;
     border-radius: 999px;
-    background: var(--surface-2);
+    background: var(--glass-hover);
     font-size: 13px;
     font-weight: 500;
   }
@@ -143,7 +152,7 @@ const t = useTranslations(lang);
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: var(--surface-2);
+    background: var(--glass-hover);
   }
 
   .theme-btn:focus-visible {
@@ -174,7 +183,7 @@ const t = useTranslations(lang);
   }
 
   .pill:hover {
-    background: var(--surface-2);
+    background: var(--glass-hover);
     color: var(--text);
   }
 
