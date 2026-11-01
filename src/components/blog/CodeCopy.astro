@@ -1,0 +1,63 @@
+---
+/**
+ * Enables the copy buttons emitted by `code-block-transformer.ts`.
+ * Labels follow the UI language, icons are cloned from the templates below.
+ */
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  copyLabel: string;
+  copiedLabel: string;
+}
+
+const { copyLabel, copiedLabel } = Astro.props;
+---
+
+<template data-code-copy-template>
+  <span data-state="idle">
+    <Icon name="copy" />
+    {copyLabel}
+  </span>
+  <span data-state="done" hidden>
+    <Icon name="check" />
+    {copiedLabel}
+  </span>
+</template>
+
+<script>
+  import { copyText } from '../../scripts/clipboard';
+
+  const template = document.querySelector<HTMLTemplateElement>('[data-code-copy-template]');
+  const RESET_MS = 1800;
+
+  document.querySelectorAll<HTMLButtonElement>('.code-block__copy').forEach((button) => {
+    if (!template) return;
+    const code = button.closest('.code-block')?.querySelector('pre code');
+    if (!code) return;
+
+    button.append(template.content.cloneNode(true));
+    const idle = button.querySelector<HTMLElement>('[data-state="idle"]')!;
+    const done = button.querySelector<HTMLElement>('[data-state="done"]')!;
+    let timer: number | undefined;
+
+    button.hidden = false;
+    button.addEventListener('click', async () => {
+      if (!(await copyText(code.textContent ?? ''))) return;
+      idle.hidden = true;
+      done.hidden = false;
+      window.clearTimeout(timer);
+      timer = window.setTimeout(() => {
+        idle.hidden = false;
+        done.hidden = true;
+      }, RESET_MS);
+    });
+  });
+</script>
+
+<style>
+  span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+</style>
