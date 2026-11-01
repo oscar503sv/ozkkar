@@ -1,0 +1,168 @@
+/* Rendered Markdown in blog posts. */
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  font-size: 18px;
+  line-height: 1.75;
+  overflow-wrap: break-word;
+}
+
+.prose > * {
+  margin: 0;
+}
+
+.prose p {
+  text-wrap: pretty;
+}
+
+.prose h2,
+.prose h3,
+.prose h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  scroll-margin-top: 120px;
+}
+
+.prose h2 {
+  margin-top: 20px;
+  font-size: 27px;
+  letter-spacing: -0.02em;
+}
+
+.prose h3 {
+  margin-top: 12px;
+  font-size: 21px;
+  letter-spacing: -0.015em;
+}
+
+.prose h4 {
+  font-size: 18px;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+
+.prose li + li {
+  margin-top: 6px;
+}
+
+.prose li::marker {
+  color: var(--accent-ink);
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose blockquote {
+  padding: 16px 20px;
+  border-radius: 16px;
+  background: var(--accent-soft);
+  color: var(--text);
+}
+
+.prose blockquote > * {
+  margin: 0;
+}
+
+.prose hr {
+  width: 100%;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.prose img {
+  border-radius: 16px;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+  display: block;
+  overflow-x: auto;
+}
+
+.prose th,
+.prose td {
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+}
+
+/* Inline code */
+.prose :not(pre) > code {
+  font-family: var(--font-mono);
+  font-size: 0.86em;
+  padding: 2px 7px;
+  border-radius: 7px;
+  background: var(--surface-2);
+}
+
+/* ---------- Code blocks (see src/lib/shiki/code-block-transformer.ts) ---------- */
+
+.prose .code-block {
+  margin: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: var(--code-bg);
+  color: var(--code-fg);
+}
+
+.prose .code-block__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  min-height: 42px;
+  padding: 10px 10px 4px 18px;
+}
+
+.prose .code-block__lang {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  opacity: 0.6;
+}
+
+.prose .code-block__copy {
+  all: unset;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 11px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--code-fg);
+  background: oklch(1 0 0 / 0.08);
+}
+
+.prose .code-block__copy:hover {
+  background: oklch(1 0 0 / 0.16);
+}
+
+.prose .code-block__copy:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.prose .code-block pre {
+  margin: 0;
+  padding: 8px 18px 20px;
+  overflow-x: auto;
+  background: transparent !important;
+  font-family: var(--font-mono);
+  font-size: 14px;
+  line-height: 1.75;
+}
+
+.prose .code-block code {
+  font-family: inherit;
+}

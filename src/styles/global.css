@@ -1,0 +1,211 @@
+@import '@fontsource-variable/bricolage-grotesque/opsz.css';
+@import '@fontsource-variable/geist';
+@import '@fontsource-variable/geist-mono';
+
+/* ---------- Design tokens ---------- */
+
+:root {
+  color-scheme: light;
+
+  --bg: oklch(0.985 0.004 235);
+  --surface: oklch(1 0 0);
+  --surface-2: oklch(0.962 0.008 235);
+  --text: oklch(0.22 0.02 255);
+  --muted: oklch(0.48 0.02 255);
+  --border: oklch(0.915 0.01 235);
+
+  --accent: oklch(0.62 0.15 235);
+  --accent-ink: oklch(0.47 0.14 235);
+  --accent-soft: oklch(0.95 0.03 235);
+  --btn-bg: oklch(0.52 0.15 235);
+  --btn-bg-h: oklch(0.46 0.15 235);
+  --btn-fg: oklch(0.99 0 0);
+
+  --accent-2: oklch(0.66 0.15 30);
+  --accent-2-ink: oklch(0.5 0.15 30);
+  --accent-2-soft: oklch(0.955 0.03 30);
+
+  --code-bg: oklch(0.22 0.02 255);
+  --code-fg: oklch(0.93 0.01 255);
+
+  --dot: oklch(0.3 0.02 255 / 0.11);
+  --glow: oklch(0.62 0.15 235 / 0.07);
+  --glow-2: oklch(0.66 0.15 30 / 0.045);
+  --shadow: 0 1px 2px oklch(0.3 0.02 255 / 0.05), 0 8px 24px oklch(0.3 0.02 255 / 0.06);
+
+  --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
+  --font-sans: 'Geist Variable', system-ui, sans-serif;
+  --font-mono: 'Geist Mono Variable', ui-monospace, Menlo, monospace;
+
+  --ring: 0 0 0 4px var(--accent-soft);
+  --sidebar-w: 260px;
+  --sidebar-w-collapsed: 76px;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+
+  --bg: oklch(0.165 0.004 255);
+  --surface: oklch(0.2 0.004 255);
+  --surface-2: oklch(0.24 0.004 255);
+  --text: oklch(0.93 0.0024 255);
+  --muted: oklch(0.7 0.006 255);
+  --border: oklch(1 0 0 / 0.075);
+
+  --accent: oklch(0.74 0.12 235);
+  --accent-ink: oklch(0.8 0.1 235);
+  --accent-soft: color-mix(in oklch, oklch(0.74 0.12 235) 15%, oklch(0.2 0.004 255));
+  --btn-bg: oklch(0.8 0.1 235);
+  --btn-bg-h: oklch(0.86 0.09 235);
+  --btn-fg: oklch(0.17 0.02 235);
+
+  --accent-2: oklch(0.74 0.12 30);
+  --accent-2-ink: oklch(0.8 0.1 30);
+  --accent-2-soft: color-mix(in oklch, oklch(0.74 0.12 30) 15%, oklch(0.2 0.004 255));
+
+  --code-bg: oklch(0.13 0.004 255);
+  --code-fg: oklch(0.9 0.005 255);
+
+  --dot: oklch(1 0 0 / 0.075);
+  --glow: oklch(0.74 0.12 235 / 0.075);
+  --glow-2: oklch(0.74 0.12 30 / 0.04);
+  --shadow: 0 0 0 1px oklch(1 0 0 / 0.02), 0 12px 32px oklch(0 0 0 / 0.25);
+}
+
+/* ---------- Base ---------- */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--bg);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: transparent;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition:
+    background 0.25s,
+    color 0.25s;
+}
+
+/* Grid pattern, only visible top-right and bottom-left. */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    linear-gradient(var(--dot) 1px, transparent 1px),
+    linear-gradient(90deg, var(--dot) 1px, transparent 1px);
+  background-size: 44px 44px;
+  -webkit-mask-image:
+    radial-gradient(ellipse 55% 50% at 88% 6%, #000 0%, transparent 75%),
+    radial-gradient(ellipse 45% 40% at 18% 96%, rgba(0, 0, 0, 0.7) 0%, transparent 75%);
+  mask-image:
+    radial-gradient(ellipse 55% 50% at 88% 6%, #000 0%, transparent 75%),
+    radial-gradient(ellipse 45% 40% at 18% 96%, rgba(0, 0, 0, 0.7) 0%, transparent 75%);
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 45% at 92% 0%, var(--glow), transparent 70%),
+    radial-gradient(ellipse 40% 40% at 10% 100%, var(--glow-2), transparent 70%);
+}
+
+a {
+  color: var(--accent-ink);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: var(--accent-2-ink);
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 0;
+}
+
+p {
+  margin: 0;
+}
+
+::selection {
+  background: var(--accent-soft);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ---------- Utilities ---------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Show content only in one theme (used for icons, labels and screenshots). */
+:root:not([data-theme='dark']) .only-dark,
+:root[data-theme='dark'] .only-light {
+  display: none !important;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
