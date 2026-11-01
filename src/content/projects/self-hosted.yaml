@@ -1,11 +1,11 @@
-name: ozkkar.dev self-hosted
+name: Plataforma self-hosted
 order: 7
 categories: [infra]
 role: author
 kind:
-  es: Infraestructura propia
-  en: Self-hosted infrastructure
+  es: Administración de servidores · DevOps
+  en: Server administration · DevOps
 description:
-  es: 'VPS en Hetzner con despliegues en contenedores, DNS wildcard en Cloudflare y servicios propios: Uptime Kuma, Stirling PDF con OCR en español y Excalidraw.'
-  en: 'Hetzner VPS with container deployments, wildcard DNS on Cloudflare and self-hosted services: Uptime Kuma, Stirling PDF with Spanish OCR, and Excalidraw.'
-stack: [Ubuntu Server, Coolify, Docker, Cloudflare]
+  es: 'Administro un VPS Linux en Hetzner que sirve como plataforma de despliegue para mis proyectos: aplicaciones en contenedores gestionadas con Coolify, DNS y certificados TLS en Cloudflare y monitoreo de disponibilidad con Uptime Kuma. También aloja herramientas internas como Stirling PDF, con OCR en español, y Excalidraw.'
+  en: 'I run a Linux VPS on Hetzner that serves as the deployment platform for my projects: containerized apps managed with Coolify, DNS and TLS certificates on Cloudflare, and uptime monitoring with Uptime Kuma. It also hosts internal tools such as Stirling PDF, with Spanish OCR, and Excalidraw.'
+stack: [Ubuntu Server, Docker, Coolify, Cloudflare, Uptime Kuma]
