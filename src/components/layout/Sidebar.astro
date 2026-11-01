@@ -3,7 +3,7 @@ import Icon from '../ui/Icon.astro';
 import { NAV_ITEMS } from './navigation';
 import { SITE, SOCIALS } from '../../data/site';
 import { otherLang, type Lang } from '../../i18n/config';
-import { routePath, withLang, type RouteKey } from '../../i18n/routes';
+import { routePath, type RouteKey } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/utils';
 
 interface Props {
@@ -19,7 +19,6 @@ const targetLang = otherLang(lang);
 const socials = [
   ...SOCIALS.map(({ label, href, icon }) => ({ label, href, icon, external: true })),
   { label: 'Email', href: `mailto:${SITE.email}`, icon: 'envelope-simple', external: false },
-  { label: 'RSS', href: withLang(lang, 'rss.xml'), icon: 'rss', external: false },
 ];
 ---
 

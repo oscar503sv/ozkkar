@@ -4,7 +4,6 @@ import { getImage } from 'astro:assets';
 
 import PreferencesScript from './PreferencesScript.astro';
 import { LOCALES, otherLang, type Lang } from '../../i18n/config';
-import { withLang } from '../../i18n/routes';
 import { useTranslations } from '../../i18n/utils';
 import heroIllustration from '../../assets/hero-illustration.jpg';
 import '../../styles/global.css';
@@ -62,12 +61,6 @@ const ogImageUrl = new URL(ogImage.src, Astro.site);
 {alternate && <link rel="alternate" hreflang={otherLang(lang)} href={alternate} />}
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link
-  rel="alternate"
-  type="application/rss+xml"
-  title={t.blog.rss}
-  href={new URL(withLang(lang, 'rss.xml'), Astro.site)}
-/>
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 <meta name="theme-color" content="#f9fafc" media="(prefers-color-scheme: light)" />

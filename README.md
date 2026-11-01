@@ -79,7 +79,7 @@ src/
   data/              datos tipados (sitio, skills, clientes)
   i18n/              idiomas, diccionario y rutas
   layouts/           AppLayout
-  lib/               consultas de contenido, RSS, contacto, transformer de Shiki
+  lib/               consultas de contenido, contacto, transformer de Shiki
   pages/             rutas finas que delegan en views/ (ES en raíz, EN en /en)
   scripts/           JS de cliente (tema, sidebar, idioma, portapapeles)
   styles/            tokens globales y estilos del contenido de los posts
@@ -96,4 +96,4 @@ src/
 - **Código en posts**: Shiki con un transformer propio que añade la cabecera
   con el lenguaje y el botón "Copiar".
 - **Iconos**: Phosphor, renderizados como SVG en el build (sin JS ni fuentes).
-- **RSS**: `/rss.xml` y `/en/rss.xml`. **Sitemap**: `/sitemap-index.xml`.
+- **Sitemap**: `/sitemap-index.xml`.

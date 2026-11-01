@@ -79,7 +79,6 @@ const es = {
     copy: 'Copiar',
     copied: 'Copiado',
     updated: 'Actualizado el',
-    rss: 'Blog de Oscar Aragón',
   },
   about: {
     title: 'Sobre mí',
@@ -212,7 +211,6 @@ const en: Dictionary = {
     copy: 'Copy',
     copied: 'Copied',
     updated: 'Updated on',
-    rss: "Oscar Aragón's blog",
   },
   about: {
     title: 'About',
