@@ -3,11 +3,11 @@ order: 5
 categories: [mobile, backend]
 role: author
 kind:
-  es: App Android
-  en: Android app
+  es: App Android · Proyecto universitario en equipo
+  en: Android app · University team project
 description:
-  es: App nativa con inicio de sesión vía Google y Facebook (Firebase Auth) y backend Node.js + MySQL desplegado en Railway.
-  en: Native app with Google and Facebook sign-in (Firebase Auth) and a Node.js + MySQL backend deployed on Railway.
+  es: 'App nativa para que una comunidad organice eventos y confirme asistencia, con historial de participación y estadísticas por usuario. Inicio de sesión con correo, Google o Facebook mediante Firebase Auth, y una API REST en Node.js y MySQL desplegada en Railway.'
+  en: 'Native app for a community to organize events and RSVP, with participation history and per-user stats. Sign-in with email, Google or Facebook through Firebase Auth, backed by a Node.js and MySQL REST API deployed on Railway.'
 stack: [Kotlin, Jetpack Compose, Node.js, MySQL, Railway]
 repo: https://github.com/oscar503sv/app-eventos-comunitarios
 featured: true

@@ -3,12 +3,12 @@ order: 4
 categories: [backend]
 role: author
 kind:
-  es: Venta de boletos para eventos
-  en: Event ticketing platform
+  es: API de venta de boletos para eventos
+  en: Event ticketing API
 description:
-  es: API para gestión de eventos y venta de boletos con integración de pagos mediante Stripe.
-  en: API for event management and ticket sales with Stripe payment integration.
-stack: [Bun, Hono, TypeScript, Stripe]
+  es: 'Backend para gestionar eventos y vender boletos de punta a punta: autenticación con JWT, pagos con Stripe Checkout confirmados mediante webhooks y boletos con código QR para validar el acceso. Documentado con Swagger y con registro de actividad.'
+  en: 'End-to-end backend for managing events and selling tickets: JWT authentication, Stripe Checkout payments confirmed through webhooks, and QR-coded tickets for access validation. Documented with Swagger, with activity logging.'
+stack: [Bun, ElysiaJS, TypeScript, PostgreSQL, Drizzle, Stripe]
 repo: https://github.com/oscar503sv/event-ticket-system
 featured: true
 stat:
