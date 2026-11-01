@@ -1,0 +1,18 @@
+name: QuinielaSV
+order: 3
+categories: [web]
+role: author
+kind:
+  es: App de pronósticos de fútbol
+  en: Football prediction app
+description:
+  es: 22 usuarios activos. Cloud Functions para el cierre automático de partidos y recordatorios, y notificaciones push con Firebase Cloud Messaging.
+  en: 22 active users. Cloud Functions close matches and send reminders automatically; push notifications via Firebase Cloud Messaging.
+stack: [Next.js, Firebase, Cloud Functions, FCM]
+repo: https://github.com/oscar503sv/quinielasv
+featured: true
+stat:
+  value: 600+
+  label:
+    es: pronósticos registrados
+    en: predictions logged

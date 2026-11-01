@@ -1,0 +1,13 @@
+name: Lexi
+order: 9
+categories: [oss]
+role: contributor
+kind:
+  es: App GTK para Linux
+  en: GTK app for Linux
+description:
+  es: Diccionario autónomo para Linux, publicado en Flathub, para estructurar el aprendizaje o la creación de idiomas.
+  en: Standalone dictionary app for Linux, published on Flathub, for structured language learning or conlang creation.
+stack: [Python, GTK, Meson]
+repo: https://github.com/Dzheremi2/Lexi
+live: https://flathub.org/apps/io.github.dzheremi2.lexi

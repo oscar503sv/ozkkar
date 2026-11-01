@@ -1,0 +1,23 @@
+name: Reelix
+order: 1
+categories: [oss]
+role: author
+icon: record
+kind:
+  es: App nativa para Linux · Código abierto
+  en: Native Linux app · Open source
+description:
+  es: Grabador de pantalla nativo y local para GNOME y Wayland, al estilo de Loom. Graba pantalla, micrófono, audio del sistema y una burbuja con tu cámara, y lo guarda en MP4. Sin nube ni cuentas.
+  en: A native, local-first screen recorder for GNOME and Wayland, in the spirit of Loom. Records your screen, mic, system audio and a webcam bubble, saved as MP4. No cloud, no accounts.
+stack: [Rust, GTK4, libadwaita, PipeWire, GStreamer]
+repo: https://github.com/oscar503sv/reelix
+download: https://github.com/oscar503sv/reelix/releases/latest
+spotlight:
+  status:
+    es: Ya disponible
+    en: Now available
+  note:
+    es: Flatpak y RPM · Licencia MIT
+    en: Flatpak & RPM · MIT license
+  screenshot: ../../assets/projects/reelix-light.png
+  screenshotDark: ../../assets/projects/reelix-dark.png

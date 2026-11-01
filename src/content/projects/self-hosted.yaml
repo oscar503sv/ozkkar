@@ -1,0 +1,11 @@
+name: ozkkar.dev self-hosted
+order: 7
+categories: [infra]
+role: author
+kind:
+  es: Infraestructura propia
+  en: Self-hosted infrastructure
+description:
+  es: 'VPS en Hetzner con despliegues en contenedores, DNS wildcard en Cloudflare y servicios propios: Uptime Kuma, Stirling PDF con OCR en español y Excalidraw.'
+  en: 'Hetzner VPS with container deployments, wildcard DNS on Cloudflare and self-hosted services: Uptime Kuma, Stirling PDF with Spanish OCR, and Excalidraw.'
+stack: [Ubuntu Server, Coolify, Docker, Cloudflare]

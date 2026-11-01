@@ -1,0 +1,18 @@
+name: MediCore
+order: 2
+categories: [backend, web]
+role: author
+kind:
+  es: Gestión clínica multi-tenant
+  en: Multi-tenant clinic management
+description:
+  es: Backend con Clean Architecture y 19 tablas. Protección contra fuerza bruta, invalidación de sesiones, impersonación de superadministrador con bitácora de auditoría y autocompletado de diagnósticos CIE-10/CIE-11.
+  en: Clean Architecture backend with 19 tables. Brute-force protection, session invalidation, audited super-admin impersonation and ICD-10/ICD-11 diagnosis autocomplete.
+stack: [FastAPI, React, PostgreSQL, Docker]
+repo: https://github.com/oscar503sv/medicore
+featured: true
+stat:
+  value: '218'
+  label:
+    es: pruebas automatizadas
+    en: automated tests

@@ -1,0 +1,12 @@
+name: Gestión de Proyectos
+order: 8
+categories: [web]
+role: author
+kind:
+  es: Proyecto universitario
+  en: University project
+description:
+  es: Dashboard para crear, administrar y visualizar proyectos y tareas, consumiendo una API REST con autenticación por tokens y roles de gerente y usuario.
+  en: Dashboard to create, manage and visualize projects and tasks, consuming a REST API with token auth and manager/user roles.
+stack: [Next.js, Tailwind CSS, API REST]
+repo: https://github.com/oscar503sv/gestion-de-proyectos

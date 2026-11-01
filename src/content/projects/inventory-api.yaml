@@ -1,0 +1,12 @@
+name: Inventory API
+order: 6
+categories: [backend]
+role: author
+kind:
+  es: API REST de inventario
+  en: Inventory REST API
+description:
+  es: API de inventario en C# con Entity Framework Core, construida por módulos siguiendo buenas prácticas de .NET.
+  en: C# inventory API with Entity Framework Core, built in modules following .NET best practices.
+stack: [ASP.NET Core, EF Core, MariaDB]
+repo: https://github.com/oscar503sv/inventory

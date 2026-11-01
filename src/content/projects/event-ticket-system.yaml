@@ -1,0 +1,18 @@
+name: Event Ticket System
+order: 4
+categories: [backend]
+role: author
+kind:
+  es: Venta de boletos para eventos
+  en: Event ticketing platform
+description:
+  es: API para gestión de eventos y venta de boletos con integración de pagos mediante Stripe.
+  en: API for event management and ticket sales with Stripe payment integration.
+stack: [Bun, Hono, TypeScript, Stripe]
+repo: https://github.com/oscar503sv/event-ticket-system
+featured: true
+stat:
+  value: Stripe
+  label:
+    es: pagos en línea
+    en: online payments
