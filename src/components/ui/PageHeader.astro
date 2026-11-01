@@ -1,0 +1,36 @@
+---
+/** H1 + lead paragraph used at the top of inner pages. */
+interface Props {
+  title: string;
+  lead?: string;
+  maxWidth?: string;
+}
+
+const { title, lead, maxWidth = '40em' } = Astro.props;
+---
+
+<header class="page-header" style={{ maxWidth }}>
+  <h1>{title}</h1>
+  {lead && <p>{lead}</p>}
+  <slot />
+</header>
+
+<style>
+  .page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  h1 {
+    font-size: clamp(40px, 5.4vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  p {
+    font-size: 18px;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+</style>

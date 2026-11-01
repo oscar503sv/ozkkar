@@ -1,0 +1,128 @@
+---
+/** Pill-shaped button or link. Renders `<a>` when `href` is set. */
+import type { HTMLAttributes } from 'astro/types';
+import Icon from './Icon.astro';
+
+type Variant = 'primary' | 'secondary' | 'soft' | 'ghost';
+
+interface Props extends Omit<HTMLAttributes<'a'> & HTMLAttributes<'button'>, 'type'> {
+  href?: string;
+  variant?: Variant;
+  size?: 'md' | 'lg' | 'sm';
+  icon?: string;
+  iconEnd?: string;
+  type?: 'button' | 'submit' | 'reset';
+  external?: boolean;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  icon,
+  iconEnd,
+  type = 'button',
+  external = false,
+  class: className,
+  ...rest
+} = Astro.props;
+
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, className];
+const externalAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+{href ? (
+  <a href={href} class:list={classes} {...externalAttrs} {...rest}>
+    {icon && <Icon name={icon} />}
+    <slot />
+    {iconEnd && <Icon name={iconEnd} />}
+  </a>
+) : (
+  <button type={type} class:list={classes} {...rest}>
+    {icon && <Icon name={icon} />}
+    <slot />
+    {iconEnd && <Icon name={iconEnd} />}
+  </button>
+)}
+
+<style>
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      border-color 0.2s,
+      color 0.2s;
+  }
+
+  .btn--md {
+    padding: 12px 21px;
+  }
+
+  .btn--lg {
+    padding: 13px 23px;
+  }
+
+  .btn--sm {
+    padding: 8px 14px;
+    font-size: 14px;
+    gap: 7px;
+  }
+
+  .btn--primary {
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+  }
+
+  .btn--primary:hover {
+    background: var(--btn-bg-h);
+    color: var(--btn-fg);
+  }
+
+  .btn--secondary {
+    background: var(--surface);
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  .btn--secondary:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .btn--soft {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .btn--soft:hover {
+    filter: brightness(0.97);
+    color: var(--accent-ink);
+  }
+
+  .btn--ghost {
+    background: transparent;
+    border-color: var(--border);
+    color: var(--text);
+  }
+
+  .btn--ghost:hover {
+    border-color: var(--accent);
+    color: var(--text);
+  }
+
+  .btn:disabled {
+    opacity: 0.7;
+    cursor: progress;
+  }
+</style>

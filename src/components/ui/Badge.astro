@@ -1,0 +1,76 @@
+---
+/** Small rounded label: stack chips, status pills, role badges and tags. */
+interface Props {
+  tone?: 'neutral' | 'muted' | 'accent' | 'accent-2';
+  size?: 'sm' | 'md';
+  dot?: boolean;
+  weight?: 'regular' | 'medium';
+  class?: string;
+}
+
+const { tone = 'muted', size = 'md', dot = false, weight, class: className } = Astro.props;
+const resolvedWeight = weight ?? (tone === 'muted' || tone === 'neutral' ? 'regular' : 'medium');
+---
+
+<span
+  class:list={['badge', `badge--${tone}`, `badge--${size}`, `badge--${resolvedWeight}`, className]}
+>
+  {dot && <span class="badge__dot" aria-hidden="true" />}
+  <slot />
+</span>
+
+<style>
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    border-radius: 999px;
+    font-size: 13px;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+
+  .badge--md {
+    padding: 4px 10px;
+  }
+
+  .badge--sm {
+    padding: 2px 8px;
+    font-size: 12px;
+  }
+
+  .badge--regular {
+    font-weight: 400;
+  }
+
+  .badge--medium {
+    font-weight: 500;
+  }
+
+  .badge--muted {
+    background: var(--surface-2);
+    color: var(--muted);
+  }
+
+  .badge--neutral {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .badge--accent {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .badge--accent-2 {
+    background: var(--accent-2-soft);
+    color: var(--accent-2-ink);
+  }
+
+  .badge__dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent-2);
+  }
+</style>

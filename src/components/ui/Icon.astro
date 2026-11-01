@@ -1,0 +1,45 @@
+---
+/**
+ * Inline Phosphor icon rendered at build time (no client JS, no icon font).
+ * Use `-fill` suffixed names for filled variants, e.g. `check-circle-fill`.
+ */
+import { icons } from '@iconify-json/ph';
+import { getIconData, iconToSVG } from '@iconify/utils';
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'svg'> {
+  name: string;
+  size?: number | string;
+  label?: string;
+}
+
+const { name, size = '1em', label, class: className, ...rest } = Astro.props;
+
+const data = getIconData(icons, name);
+if (!data) throw new Error(`Unknown Phosphor icon: "${name}"`);
+
+const { attributes, body } = iconToSVG(data);
+---
+
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox={attributes.viewBox}
+  width={size}
+  height={size}
+  fill="currentColor"
+  class:list={['icon', className]}
+  role={label ? 'img' : undefined}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+  focusable="false"
+  {...rest}
+  set:html={body}
+/>
+
+<style>
+  .icon {
+    flex: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+</style>

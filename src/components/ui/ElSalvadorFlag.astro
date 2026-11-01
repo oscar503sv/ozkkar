@@ -1,0 +1,48 @@
+---
+interface Props {
+  label: string;
+}
+
+const { label } = Astro.props;
+---
+
+<span class="flag" role="img" aria-label={label} title={label}>
+  <span class="flag__stripe flag__stripe--blue"></span>
+  <span class="flag__stripe flag__stripe--white">
+    <span class="flag__seal"></span>
+  </span>
+  <span class="flag__stripe flag__stripe--blue"></span>
+</span>
+
+<style>
+  .flag {
+    display: inline-flex;
+    flex-direction: column;
+    width: 24px;
+    height: 16px;
+    border-radius: 3px;
+    overflow: hidden;
+    box-shadow: 0 0 0 1px var(--border);
+  }
+
+  .flag__stripe {
+    flex: 1;
+  }
+
+  .flag__stripe--blue {
+    background: #0f47af;
+  }
+
+  .flag__stripe--white {
+    display: grid;
+    place-items: center;
+    background: #fff;
+  }
+
+  .flag__seal {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    background: #c9a227;
+  }
+</style>

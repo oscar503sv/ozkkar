@@ -1,0 +1,59 @@
+---
+/** Toggleable pill used for project filters, blog tags and form options. */
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props extends HTMLAttributes<'button'> {
+  active?: boolean;
+  size?: 'sm' | 'md';
+}
+
+const { active = false, size = 'md', class: className, ...rest } = Astro.props;
+---
+
+<button
+  type="button"
+  class:list={['chip', `chip--${size}`, className]}
+  aria-pressed={active ? 'true' : 'false'}
+  {...rest}
+>
+  <slot />
+</button>
+
+<style>
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 500;
+    line-height: 1.4;
+    white-space: nowrap;
+    transition:
+      background 0.15s,
+      color 0.15s,
+      border-color 0.15s;
+  }
+
+  .chip:hover {
+    border-color: var(--accent);
+  }
+
+  .chip[aria-pressed='true'] {
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
+  }
+
+  .chip--md {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .chip--sm {
+    padding: 6px 13px;
+    font-size: 13px;
+  }
+</style>

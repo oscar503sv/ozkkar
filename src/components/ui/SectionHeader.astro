@@ -1,0 +1,63 @@
+---
+/** Section H2 with an optional "see all →" link on the right. */
+import Icon from './Icon.astro';
+
+interface Props {
+  title: string;
+  id?: string;
+  link?: { href: string; label: string };
+  size?: 'lg' | 'md';
+}
+
+const { title, id, link, size = 'lg' } = Astro.props;
+---
+
+<div class="section-header">
+  <h2 id={id} class:list={[`section-header__title--${size}`]}>
+    {title}
+  </h2>
+  {link && (
+    <a href={link.href} class="section-header__link">
+      {link.label}
+      <Icon name="arrow-right" />
+    </a>
+  )}
+</div>
+
+<style>
+  .section-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  h2 {
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .section-header__title--lg {
+    font-size: 36px;
+  }
+
+  .section-header__title--md {
+    font-size: 30px;
+  }
+
+  .section-header__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 15px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+    color: var(--accent-ink);
+  }
+
+  .section-header__link:hover {
+    color: var(--accent-2-ink);
+  }
+</style>
