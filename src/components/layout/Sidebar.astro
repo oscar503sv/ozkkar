@@ -119,12 +119,23 @@ const socials = [
     flex-direction: column;
     gap: 6px;
     padding: 20px 14px;
-    background: var(--surface);
-    border-right: 1px solid var(--border);
+    background: var(--glass-sheen), var(--glass-bg);
+    -webkit-backdrop-filter: var(--glass-blur);
+    backdrop-filter: var(--glass-blur);
+    border-right: 1px solid var(--glass-border);
+    box-shadow:
+      1px 0 0 var(--glass-edge),
+      8px 0 32px -12px var(--glass-edge);
     overflow: hidden auto;
     transition:
       flex-basis 0.25s ease,
       width 0.25s ease;
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .sidebar {
+      background: var(--surface);
+    }
   }
 
   @media (max-width: 959.98px) {
@@ -220,7 +231,7 @@ const socials = [
   }
 
   .item:hover {
-    background: var(--surface-2);
+    background: var(--glass-hover);
     color: var(--text);
   }
 
@@ -243,7 +254,7 @@ const socials = [
     font-weight: 600;
     padding: 2px 7px;
     border-radius: 6px;
-    background: var(--surface-2);
+    background: var(--glass-hover);
     color: var(--text);
   }
 
@@ -284,7 +295,7 @@ const socials = [
   }
 
   .icon-btn:hover {
-    background: var(--surface-2);
+    background: var(--glass-hover);
     color: var(--text);
   }
 

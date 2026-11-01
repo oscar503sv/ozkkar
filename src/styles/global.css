@@ -33,6 +33,15 @@
   --glow-2: oklch(0.66 0.15 30 / 0.045);
   --shadow: 0 1px 2px oklch(0.3 0.02 255 / 0.05), 0 8px 24px oklch(0.3 0.02 255 / 0.06);
 
+  /* Frosted glass (sidebar) */
+  --glass-bg: oklch(1 0 0 / 0.45);
+  --glass-sheen: linear-gradient(180deg, oklch(1 0 0 / 0.5), oklch(1 0 0 / 0) 40%);
+  --glass-border: oklch(1 0 0 / 0.7);
+  --glass-edge: oklch(0.3 0.02 255 / 0.08);
+  --glass-hover: oklch(0.3 0.02 255 / 0.05);
+  --glass-blur: blur(22px) saturate(180%);
+  --glow-3: oklch(0.62 0.15 235 / 0.16);
+
   --font-display: 'Bricolage Grotesque Variable', system-ui, sans-serif;
   --font-sans: 'Geist Variable', system-ui, sans-serif;
   --font-mono: 'Geist Mono Variable', ui-monospace, Menlo, monospace;
@@ -70,6 +79,13 @@
   --glow: oklch(0.74 0.12 235 / 0.075);
   --glow-2: oklch(0.74 0.12 30 / 0.04);
   --shadow: 0 0 0 1px oklch(1 0 0 / 0.02), 0 12px 32px oklch(0 0 0 / 0.25);
+
+  --glass-bg: oklch(0.22 0.004 255 / 0.5);
+  --glass-sheen: linear-gradient(180deg, oklch(1 0 0 / 0.06), oklch(1 0 0 / 0) 40%);
+  --glass-border: oklch(1 0 0 / 0.08);
+  --glass-edge: oklch(0 0 0 / 0.35);
+  --glass-hover: oklch(1 0 0 / 0.06);
+  --glow-3: oklch(0.74 0.12 235 / 0.1);
 }
 
 /* ---------- Base ---------- */
@@ -126,7 +142,8 @@ body::after {
   pointer-events: none;
   background:
     radial-gradient(ellipse 50% 45% at 92% 0%, var(--glow), transparent 70%),
-    radial-gradient(ellipse 40% 40% at 10% 100%, var(--glow-2), transparent 70%);
+    radial-gradient(ellipse 40% 40% at 10% 100%, var(--glow-2), transparent 70%),
+    radial-gradient(ellipse 28% 38% at 0% 18%, var(--glow-3), transparent 70%);
 }
 
 a {
