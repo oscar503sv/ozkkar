@@ -1,0 +1,107 @@
+---
+import { Image } from 'astro:assets';
+
+import Button from '../ui/Button.astro';
+import heroIllustration from '../../assets/hero-illustration.jpg';
+import type { Lang } from '../../i18n/config';
+import { routePath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="hero">
+  <div class="hero__text">
+    <h1 class="hero__title">{t.home.hello}</h1>
+    <p class="hero__subtitle">{t.home.heroTitle}</p>
+    <p class="hero__deck">{t.home.heroDeck}</p>
+    <div class="hero__actions">
+      <Button href={routePath('projects', lang)} iconEnd="arrow-right">
+        {t.home.seeWork}
+      </Button>
+      <Button href={routePath('contact', lang)} variant="secondary">
+        {t.home.writeMe}
+      </Button>
+    </div>
+  </div>
+  <div class="hero__media">
+    <Image
+      src={heroIllustration}
+      alt={t.home.heroAlt}
+      widths={[300, 600]}
+      sizes="300px"
+      loading="eager"
+      fetchpriority="high"
+    />
+  </div>
+</section>
+
+<style>
+  .hero {
+    display: flex;
+    flex-wrap: wrap-reverse;
+    align-items: center;
+    gap: 40px 56px;
+  }
+
+  .hero__text {
+    flex: 1 1 440px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+  }
+
+  .hero__title {
+    font-size: clamp(44px, 6.4vw, 76px);
+    line-height: 1;
+    letter-spacing: -0.035em;
+  }
+
+  .hero__subtitle {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: clamp(22px, 2.6vw, 30px);
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    color: var(--accent-ink);
+    text-wrap: balance;
+  }
+
+  .hero__deck {
+    max-width: 36em;
+    font-size: 18px;
+    line-height: 1.65;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .hero__media {
+    flex: 0 1 300px;
+    min-width: 220px;
+    aspect-ratio: 1;
+    border-radius: 32px;
+    overflow: hidden;
+    background: var(--accent-soft);
+    rotate: 2deg;
+  }
+
+  .hero__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+</style>

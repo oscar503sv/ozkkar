@@ -1,0 +1,80 @@
+---
+import Button from '../components/ui/Button.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+import { otherLang, type Lang } from '../i18n/config';
+import { routePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<AppLayout
+  lang={lang}
+  alternateUrl={routePath('home', otherLang(lang))}
+  title="404"
+  description={t.notFound.body}
+  noindex
+>
+  <div class="not-found">
+    <p class="not-found__code" aria-hidden="true">
+      4<span>0</span>4
+    </p>
+    <h1 class="not-found__title">{t.notFound.title}</h1>
+    <p class="not-found__body">{t.notFound.body}</p>
+    <div class="not-found__actions">
+      <Button href={routePath('home', lang)} icon="house">
+        {t.notFound.back}
+      </Button>
+      <Button href={routePath('blog', lang)} variant="secondary">
+        {t.nav.blog}
+      </Button>
+    </div>
+  </div>
+</AppLayout>
+
+<style>
+  .not-found {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+    padding: 40px 0;
+  }
+
+  .not-found__code {
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: clamp(120px, 20vw, 220px);
+    line-height: 0.9;
+    letter-spacing: -0.06em;
+    color: var(--accent);
+  }
+
+  .not-found__code span {
+    color: var(--accent-2);
+  }
+
+  .not-found__title {
+    font-size: clamp(28px, 3.6vw, 40px);
+    letter-spacing: -0.025em;
+    line-height: 1.15;
+  }
+
+  .not-found__body {
+    max-width: 30em;
+    font-size: 18px;
+    color: var(--muted);
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 8px;
+  }
+</style>

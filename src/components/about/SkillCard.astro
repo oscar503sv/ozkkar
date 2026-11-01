@@ -1,0 +1,70 @@
+---
+import Badge from '../ui/Badge.astro';
+import Icon from '../ui/Icon.astro';
+import { skillItems, type SkillGroup } from '../../data/skills';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  skill: SkillGroup;
+  lang: Lang;
+}
+
+const { skill, lang } = Astro.props;
+---
+
+<article class="skill">
+  <h3 class="skill__title">
+    <span class="skill__icon">
+      <Icon name={skill.icon} size={17} />
+    </span>
+    {skill.group[lang]}
+  </h3>
+  <ul class="skill__items">
+    {skillItems(skill, lang).map((item) => (
+      <li>
+        <Badge tone="neutral">{item}</Badge>
+      </li>
+    ))}
+  </ul>
+</article>
+
+<style>
+  .skill {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 22px;
+    border-radius: 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+  }
+
+  .skill__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .skill__icon {
+    flex: none;
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    display: grid;
+    place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .skill__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

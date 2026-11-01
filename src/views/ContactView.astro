@@ -1,0 +1,62 @@
+---
+import ContactForm from '../components/contact/ContactForm.astro';
+import EmailCard from '../components/contact/EmailCard.astro';
+import LocalTime from '../components/contact/LocalTime.astro';
+import SocialLinks from '../components/contact/SocialLinks.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+import { otherLang, type Lang } from '../i18n/config';
+import { routePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<AppLayout
+  lang={lang}
+  active="contact"
+  alternateUrl={routePath('contact', otherLang(lang))}
+  title={t.contact.title}
+  description={t.contact.lead}
+>
+  <div class="page">
+    <PageHeader title={t.contact.title} lead={t.contact.lead} maxWidth="38em" />
+
+    <div class="layout">
+      <aside class="aside">
+        <EmailCard lang={lang} />
+        <LocalTime lang={lang} />
+        <SocialLinks />
+      </aside>
+      <ContactForm lang={lang} />
+    </div>
+  </div>
+</AppLayout>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 24px;
+  }
+
+  .aside {
+    flex: 1 1 300px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+</style>

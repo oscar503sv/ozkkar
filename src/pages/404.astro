@@ -1,0 +1,10 @@
+---
+import NotFoundView from '../views/NotFoundView.astro';
+
+// Rendered on demand so the language can follow the requested URL.
+export const prerender = false;
+
+const lang = Astro.url.pathname.startsWith('/en/') ? 'en' : 'es';
+---
+
+<NotFoundView lang={lang} />

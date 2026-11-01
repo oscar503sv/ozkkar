@@ -1,0 +1,82 @@
+---
+import ClientCard from '../components/projects/ClientCard.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import ProjectFilters from '../components/projects/ProjectFilters.astro';
+import ProjectGrid from '../components/projects/ProjectGrid.astro';
+import Icon from '../components/ui/Icon.astro';
+import PageHeader from '../components/ui/PageHeader.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+import { CLIENTS } from '../data/clients';
+import { otherLang, type Lang } from '../i18n/config';
+import { routePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+import { getProjects } from '../lib/projects';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const projects = await getProjects();
+---
+
+<AppLayout
+  lang={lang}
+  active="projects"
+  alternateUrl={routePath('projects', otherLang(lang))}
+  title={t.projects.title}
+  description={t.projects.intro}
+>
+  <div class="page">
+    <PageHeader title={t.projects.title} lead={t.projects.intro} />
+
+    <ProjectFilters projects={projects} lang={lang} />
+
+    <ProjectGrid>
+      {projects.map((project) => (
+        <ProjectCard project={project} lang={lang} headingLevel="h2" />
+      ))}
+    </ProjectGrid>
+
+    <section class="clients" aria-labelledby="clients-title">
+      <div>
+        <SectionHeader id="clients-title" title={t.projects.clientWork} size="md" />
+        <p class="clients__note">
+          <Icon name="lock-simple" />
+          {t.projects.clientNote}
+        </p>
+      </div>
+      <ProjectGrid>
+        {CLIENTS.map((client) => (
+          <ClientCard client={client} lang={lang} />
+        ))}
+      </ProjectGrid>
+    </section>
+  </div>
+</AppLayout>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 40px;
+  }
+
+  .clients {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-top: 32px;
+  }
+
+  .clients__note {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 4px;
+    font-size: 15px;
+    color: var(--muted);
+  }
+</style>

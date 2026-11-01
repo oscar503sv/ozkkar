@@ -1,0 +1,90 @@
+---
+import SkillCard from '../components/about/SkillCard.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+import { SKILLS } from '../data/skills';
+import { otherLang, type Lang } from '../i18n/config';
+import { routePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const [lead, ...rest] = t.about.profile;
+---
+
+<AppLayout
+  lang={lang}
+  active="about"
+  alternateUrl={routePath('about', otherLang(lang))}
+  title={t.about.title}
+  description={t.about.description}
+>
+  <div class="page">
+    <header class="intro">
+      <h1 class="intro__title">{t.about.title}</h1>
+      <p class="intro__lead">{lead}</p>
+      {rest.map((paragraph) => (
+        <p class="intro__body">{paragraph}</p>
+      ))}
+    </header>
+
+    <section class="skills" aria-labelledby="skills-title">
+      <SectionHeader id="skills-title" title={t.about.skills} size="md" />
+      <div class="skills__grid">
+        {SKILLS.map((skill) => (
+          <SkillCard skill={skill} lang={lang} />
+        ))}
+      </div>
+    </section>
+  </div>
+</AppLayout>
+
+<style>
+  .page {
+    display: flex;
+    flex-direction: column;
+    gap: 56px;
+  }
+
+  .intro {
+    max-width: 44em;
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .intro__title {
+    font-size: clamp(40px, 5.4vw, 60px);
+    line-height: 1.05;
+    letter-spacing: -0.035em;
+  }
+
+  .intro__lead {
+    font-size: 21px;
+    line-height: 1.6;
+    text-wrap: pretty;
+  }
+
+  .intro__body {
+    font-size: 18px;
+    line-height: 1.7;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .skills {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .skills__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
+    gap: 16px;
+  }
+</style>

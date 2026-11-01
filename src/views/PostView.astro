@@ -1,0 +1,185 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+
+import CodeCopy from '../components/blog/CodeCopy.astro';
+import Badge from '../components/ui/Badge.astro';
+import Icon from '../components/ui/Icon.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+import { routePath } from '../i18n/routes';
+import { formatDate, useTranslations } from '../i18n/utils';
+import { getAlternatePostUrl, type PostListing } from '../lib/blog';
+import '../styles/prose.css';
+
+interface Props {
+  post: PostListing;
+}
+
+const { post } = Astro.props;
+const { entry, uiLang: lang } = post;
+const { data } = entry;
+const t = useTranslations(lang);
+const { Content } = await render(entry);
+const alternateUrl = await getAlternatePostUrl(post);
+const showUpdated = data.updatedDate && data.updatedDate.valueOf() !== data.pubDate.valueOf();
+---
+
+<AppLayout
+  lang={lang}
+  active="blog"
+  alternateUrl={alternateUrl}
+  title={data.title}
+  description={data.description}
+  image={data.cover}
+  type="article"
+  publishedTime={data.pubDate}
+>
+  <article class="post" lang={post.onlyIn}>
+    <a href={routePath('blog', lang)} class="back" lang={lang}>
+      <Icon name="arrow-left" />
+      {t.blog.backToBlog}
+    </a>
+
+    <header class="post__header">
+      <div class="post__meta" lang={lang}>
+        <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate, lang)}</time>
+        {showUpdated && <span>{`${t.blog.updated} ${formatDate(data.updatedDate!, lang)}`}</span>}
+        {data.tags.length > 0 && (
+          <span class="post__taglist">{data.tags.map((tag) => `#${tag}`).join('  ')}</span>
+        )}
+        {post.onlyIn && (
+          <Badge tone="accent-2" size="sm">
+            {t.blog.onlyIn[post.onlyIn]}
+          </Badge>
+        )}
+      </div>
+      <h1 class="post__title">{data.title}</h1>
+      <p class="post__description">{data.description}</p>
+    </header>
+
+    <Image
+      src={data.cover}
+      alt={data.coverAlt}
+      widths={[740, 1480]}
+      sizes="(min-width: 820px) 740px, 100vw"
+      loading="eager"
+      fetchpriority="high"
+      class="post__cover"
+    />
+
+    <div class="prose">
+      <Content />
+    </div>
+
+    {data.tags.length > 0 && (
+      <ul class="post__tags">
+        {data.tags.map((tag) => (
+          <li>
+            <a href={`${routePath('blog', lang)}?tag=${encodeURIComponent(tag)}`} class="tag">
+              #{tag}
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+  </article>
+
+  <CodeCopy copyLabel={t.blog.copy} copiedLabel={t.blog.copied} />
+</AppLayout>
+
+<style>
+  .post {
+    width: 100%;
+    max-width: 740px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .back {
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px 8px 10px;
+    border-radius: 999px;
+    background: var(--surface-2);
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+
+  .back:hover {
+    color: var(--text);
+  }
+
+  .post__header {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .post__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .post__taglist {
+    color: var(--accent-ink);
+    white-space: pre-wrap;
+  }
+
+  .post__title {
+    font-size: clamp(34px, 4.6vw, 52px);
+    line-height: 1.08;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+
+  .post__description {
+    font-size: 19px;
+    line-height: 1.55;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .post :global(.post__cover) {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 22px;
+    background: var(--surface-2);
+  }
+
+  .post__tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 12px 0 0;
+    list-style: none;
+  }
+
+  .tag {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 999px;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+  }
+
+  .tag:hover {
+    color: var(--accent-2-ink);
+  }
+</style>

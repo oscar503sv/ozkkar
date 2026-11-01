@@ -1,0 +1,19 @@
+---
+import type { GetStaticPaths } from 'astro';
+
+import PostView from '../../views/PostView.astro';
+import { getPostListings, type PostListing } from '../../lib/blog';
+
+export const getStaticPaths = (async () => {
+  const posts = await getPostListings('es');
+  return posts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+interface Props {
+  post: PostListing;
+}
+
+const { post } = Astro.props;
+---
+
+<PostView post={post} />

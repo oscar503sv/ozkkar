@@ -1,0 +1,95 @@
+---
+import PostRow from '../components/blog/PostRow.astro';
+import CallToAction from '../components/home/CallToAction.astro';
+import Hero from '../components/home/Hero.astro';
+import QuickFacts from '../components/home/QuickFacts.astro';
+import ProjectCard from '../components/projects/ProjectCard.astro';
+import ProjectGrid from '../components/projects/ProjectGrid.astro';
+import Spotlight from '../components/projects/Spotlight.astro';
+import SectionHeader from '../components/ui/SectionHeader.astro';
+import AppLayout from '../layouts/AppLayout.astro';
+import { otherLang, type Lang } from '../i18n/config';
+import { routePath } from '../i18n/routes';
+import { useTranslations } from '../i18n/utils';
+import { getPostListings } from '../lib/blog';
+import { getProjects } from '../lib/projects';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+
+const projects = await getProjects();
+const spotlight = projects.find((p) => p.data.spotlight);
+const featured = projects.filter((p) => p.data.featured && p !== spotlight);
+const latestPosts = (await getPostListings(lang)).slice(0, 3);
+---
+
+<AppLayout
+  lang={lang}
+  active="home"
+  alternateUrl={routePath('home', otherLang(lang))}
+  redirectByBrowserLang={lang === 'es'}
+>
+  <div class="home">
+    <Hero lang={lang} />
+    <QuickFacts lang={lang} />
+
+    <section class="section" aria-labelledby="featured-title">
+      <SectionHeader
+        id="featured-title"
+        title={t.home.featured}
+        link={{ href: routePath('projects', lang), label: t.home.allProjects }}
+      />
+      {spotlight && <Spotlight project={spotlight} lang={lang} />}
+      <ProjectGrid>
+        {featured.map((project) => (
+          <ProjectCard project={project} lang={lang} variant="compact" />
+        ))}
+      </ProjectGrid>
+    </section>
+
+    {latestPosts.length > 0 && (
+      <section class="section section--tight" aria-labelledby="latest-title">
+        <SectionHeader
+          id="latest-title"
+          title={t.home.latestWriting}
+          link={{ href: routePath('blog', lang), label: t.home.allPosts }}
+        />
+        <div class="posts">
+          {latestPosts.map((post) => (
+            <PostRow post={post} />
+          ))}
+        </div>
+      </section>
+    )}
+
+    <CallToAction lang={lang} />
+  </div>
+</AppLayout>
+
+<style>
+  .home {
+    display: flex;
+    flex-direction: column;
+    gap: 96px;
+  }
+
+  .section {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  .section--tight {
+    gap: 20px;
+  }
+
+  .posts {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+</style>

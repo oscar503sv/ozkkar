@@ -1,0 +1,88 @@
+---
+/** Compact post row used in "Latest from the blog" on the home page. */
+import { Image } from 'astro:assets';
+
+import Icon from '../ui/Icon.astro';
+import { formatDate } from '../../i18n/utils';
+import type { PostListing } from '../../lib/blog';
+
+interface Props {
+  post: PostListing;
+}
+
+const { post } = Astro.props;
+const { data } = post.entry;
+---
+
+<a href={post.url} class="row">
+  <Image src={data.cover} alt="" width={224} height={152} class="row__thumb" />
+  <span class="row__text">
+    <time class="row__date" datetime={data.pubDate.toISOString()}>
+      {formatDate(data.pubDate, post.uiLang)}
+    </time>
+    <span class="row__title" lang={post.onlyIn}>
+      {data.title}
+    </span>
+  </span>
+  <Icon name="arrow-right" size={18} class="row__arrow" />
+</a>
+
+<style>
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin: 0 -12px;
+    padding: 12px;
+    border-radius: 18px;
+    color: inherit;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+
+  .row:hover {
+    background: var(--surface-2);
+    color: inherit;
+  }
+
+  .row :global(.row__thumb) {
+    flex: none;
+    width: 112px;
+    height: 76px;
+    border-radius: 12px;
+    object-fit: cover;
+    background: var(--surface-2);
+  }
+
+  .row__text {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .row__date {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .row__title {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 19px;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .row :global(.row__arrow) {
+    color: var(--muted);
+  }
+
+  @media (max-width: 480px) {
+    .row :global(.row__thumb) {
+      width: 84px;
+      height: 60px;
+    }
+  }
+</style>

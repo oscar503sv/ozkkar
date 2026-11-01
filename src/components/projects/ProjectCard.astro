@@ -1,0 +1,169 @@
+---
+/**
+ * Project card.
+ * - `compact` (home): the whole card links to the project, shows the metric pill.
+ * - `full` (projects page): role badge, footer links and filter metadata.
+ */
+import Badge from '../ui/Badge.astro';
+import Icon from '../ui/Icon.astro';
+import type { Lang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/utils';
+import { projectIcon, projectUrl, type ProjectEntry } from '../../lib/projects';
+
+interface Props {
+  project: ProjectEntry;
+  lang: Lang;
+  variant?: 'compact' | 'full';
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { project, lang, variant = 'full', headingLevel = 'h3' } = Astro.props;
+const t = useTranslations(lang);
+const { data } = project;
+const Heading = headingLevel;
+
+const href = variant === 'compact' ? projectUrl(project) : undefined;
+const Root = href ? 'a' : 'article';
+const rootAttrs = href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {};
+
+const links = [
+  data.repo && { href: data.repo, label: t.projects.viewRepo, icon: 'github-logo' },
+  data.live && { href: data.live, label: t.projects.viewLive, icon: 'arrow-up-right' },
+  data.download && { href: data.download, label: t.projects.download, icon: 'download-simple' },
+].filter(Boolean) as { href: string; label: string; icon: string }[];
+---
+
+<Root
+  class:list={['card', { 'card--link': href }]}
+  data-project
+  data-categories={data.categories.join(' ')}
+  {...rootAttrs}
+>
+  <div class="card__top">
+    <span class="card__icon">
+      <Icon name={projectIcon(project)} size={22} />
+    </span>
+    {variant === 'compact' ? (
+      href && <Icon name="arrow-up-right" size={20} class="card__arrow" />
+    ) : (
+      <Badge tone={data.role === 'author' ? 'muted' : 'accent-2'} size="sm" weight="medium">
+        {data.role === 'author' ? t.projects.author : t.projects.contributor}
+      </Badge>
+    )}
+  </div>
+
+  <div>
+    <Heading class="card__title">{data.name}</Heading>
+    <p class="card__kind">{data.kind[lang]}</p>
+  </div>
+
+  <p class="card__desc">{data.description[lang]}</p>
+
+  <div class="card__chips">
+    {variant === 'compact' && data.stat && (
+      <Badge tone="accent-2">{`${data.stat.value} ${data.stat.label[lang]}`}</Badge>
+    )}
+    {data.stack.map((item) => (
+      <Badge>{item}</Badge>
+    ))}
+  </div>
+
+  {variant === 'full' && links.length > 0 && (
+    <div class="card__links">
+      {links.map(({ href, label, icon }) => (
+        <a href={href} target="_blank" rel="noopener noreferrer" class="card__link">
+          <Icon name={icon} />
+          {label}
+        </a>
+      ))}
+    </div>
+  )}
+</Root>
+
+<style>
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 26px;
+    border-radius: 22px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+    color: inherit;
+    text-decoration: none;
+    transition:
+      transform 0.2s,
+      border-color 0.2s;
+  }
+
+  .card--link:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    color: inherit;
+  }
+
+  .card__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .card__icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 14px;
+    display: grid;
+    place-items: center;
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .card :global(.card__arrow) {
+    color: var(--muted);
+  }
+
+  .card__title {
+    font-size: 24px;
+    letter-spacing: -0.02em;
+    line-height: 1.25;
+  }
+
+  .card__kind {
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .card__desc {
+    flex: 1;
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .card__chips {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .card__links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding-top: 6px;
+  }
+
+  .card__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    white-space: nowrap;
+    text-decoration: none;
+  }
+</style>

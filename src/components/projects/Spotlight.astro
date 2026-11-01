@@ -1,0 +1,159 @@
+---
+/** Large featured card for the project marked with `spotlight`. */
+import { Image } from 'astro:assets';
+
+import Badge from '../ui/Badge.astro';
+import Button from '../ui/Button.astro';
+import type { Lang } from '../../i18n/config';
+import { format, useTranslations } from '../../i18n/utils';
+import type { ProjectEntry } from '../../lib/projects';
+
+interface Props {
+  project: ProjectEntry;
+  lang: Lang;
+}
+
+const { project, lang } = Astro.props;
+const t = useTranslations(lang);
+const { data } = project;
+const spotlight = data.spotlight!;
+const alt = format(t.projects.screenshotAlt, { name: data.name });
+const imageSizes = '(min-width: 960px) 180px, 45vw';
+---
+
+<article class="spotlight">
+  <div class="spotlight__body">
+    <div class="spotlight__status">
+      <Badge tone="accent-2" dot>
+        {spotlight.status[lang]}
+      </Badge>
+      {spotlight.note && <span class="spotlight__note">{spotlight.note[lang]}</span>}
+    </div>
+    <h3 class="spotlight__title">{data.name}</h3>
+    <p class="spotlight__desc">{data.description[lang]}</p>
+    <div class="spotlight__chips">
+      {data.stack.map((item) => (
+        <Badge>{item}</Badge>
+      ))}
+    </div>
+    <div class="spotlight__actions">
+      {data.repo && (
+        <Button href={data.repo} variant="ghost" size="sm" icon="github-logo" external>
+          {t.projects.viewRepo}
+        </Button>
+      )}
+      {data.download && (
+        <Button href={data.download} variant="soft" size="sm" icon="download-simple" external>
+          {t.projects.download}
+        </Button>
+      )}
+    </div>
+  </div>
+
+  <div class="spotlight__media">
+    {spotlight.screenshot && (
+      <Image
+        src={spotlight.screenshot}
+        alt={alt}
+        widths={[240, 480]}
+        sizes={imageSizes}
+        class:list={['spotlight__shot', { 'only-light': spotlight.screenshotDark }]}
+      />
+    )}
+    {spotlight.screenshotDark && (
+      <Image
+        src={spotlight.screenshotDark}
+        alt={alt}
+        widths={[240, 480]}
+        sizes={imageSizes}
+        class="spotlight__shot only-dark"
+      />
+    )}
+  </div>
+</article>
+
+<style>
+  .spotlight {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 24px 36px;
+    padding: clamp(24px, 3.4vw, 36px);
+    border-radius: 26px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .spotlight__body {
+    flex: 1 1 360px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .spotlight__status {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .spotlight__note {
+    font-size: 13px;
+    color: var(--muted);
+  }
+
+  .spotlight__title {
+    font-size: clamp(30px, 3.6vw, 40px);
+    letter-spacing: -0.03em;
+    line-height: 1.05;
+  }
+
+  .spotlight__desc {
+    max-width: 34em;
+    font-size: 17px;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+
+  .spotlight__chips,
+  .spotlight__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .spotlight__actions {
+    gap: 8px;
+    margin-top: 4px;
+  }
+
+  /* The app window "peeks" out of the bottom of the frame. */
+  .spotlight__media {
+    position: relative;
+    flex: 1 1 300px;
+    min-width: 0;
+    aspect-ratio: 16 / 10;
+    border-radius: 18px;
+    overflow: hidden;
+    background:
+      radial-gradient(ellipse 70% 60% at 50% 100%, var(--accent-soft), transparent 70%),
+      var(--surface-2);
+  }
+
+  .spotlight__media :global(.spotlight__shot) {
+    position: absolute;
+    left: 50%;
+    top: 10%;
+    width: 46%;
+    height: auto;
+    translate: -50% 0;
+    border-radius: 12px;
+    box-shadow:
+      0 0 0 1px var(--border),
+      0 18px 40px oklch(0.2 0.02 255 / 0.18);
+  }
+</style>

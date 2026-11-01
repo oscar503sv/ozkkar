@@ -1,0 +1,56 @@
+---
+import Button from '../ui/Button.astro';
+import type { Lang } from '../../i18n/config';
+import { routePath } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<section class="cta" aria-labelledby="cta-title">
+  <div class="cta__text">
+    <h2 id="cta-title" class="cta__title">
+      {t.home.ctaTitle}
+    </h2>
+    <p class="cta__body">{t.home.ctaBody}</p>
+  </div>
+  <Button href={routePath('contact', lang)} size="lg" icon="envelope-simple">
+    {t.home.writeMe}
+  </Button>
+</section>
+
+<style>
+  .cta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding: clamp(28px, 4vw, 44px);
+    border-radius: 28px;
+    background: var(--accent-soft);
+  }
+
+  .cta__text {
+    flex: 1 1 360px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .cta__title {
+    font-size: 32px;
+    letter-spacing: -0.025em;
+    line-height: 1.2;
+  }
+
+  .cta__body {
+    max-width: 34em;
+    font-size: 17px;
+  }
+</style>

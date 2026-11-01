@@ -1,0 +1,80 @@
+---
+/**
+ * Category filter pills. Filtering is progressive enhancement: without JS
+ * every project stays visible. State is mirrored in `?cat=`.
+ */
+import FilterChip from '../ui/FilterChip.astro';
+import { PROJECT_CATEGORIES } from '../../data/project-categories';
+import type { Lang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/utils';
+import type { ProjectEntry } from '../../lib/projects';
+
+interface Props {
+  projects: ProjectEntry[];
+  lang: Lang;
+}
+
+const { projects, lang } = Astro.props;
+const t = useTranslations(lang);
+
+const filters = (['all', ...PROJECT_CATEGORIES] as const).map((key) => ({
+  key,
+  label: t.projects.filters[key],
+  count:
+    key === 'all'
+      ? projects.length
+      : projects.filter((p) => p.data.categories.includes(key)).length,
+}));
+---
+
+<div class="filters" role="group" aria-label={t.projects.filterLabel} data-project-filters>
+  {filters
+    .filter(({ count }) => count > 0)
+    .map(({ key, label, count }) => (
+      <FilterChip active={key === 'all'} data-category={key}>
+        {label}
+        <span class="filters__count">{count}</span>
+      </FilterChip>
+    ))}
+</div>
+
+<script>
+  const container = document.querySelector<HTMLElement>('[data-project-filters]');
+  const buttons = [...(container?.querySelectorAll<HTMLButtonElement>('[data-category]') ?? [])];
+  const cards = [...document.querySelectorAll<HTMLElement>('[data-project-grid] [data-project]')];
+  const valid = new Set(buttons.map((b) => b.dataset.category));
+
+  function apply(category: string, updateUrl: boolean): void {
+    buttons.forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.category === category)));
+    cards.forEach((card) => {
+      const categories = card.dataset.categories?.split(' ') ?? [];
+      card.hidden = category !== 'all' && !categories.includes(category);
+    });
+    if (updateUrl) {
+      const url = new URL(location.href);
+      if (category === 'all') url.searchParams.delete('cat');
+      else url.searchParams.set('cat', category);
+      history.replaceState(null, '', url);
+    }
+  }
+
+  buttons.forEach((button) =>
+    button.addEventListener('click', () => apply(button.dataset.category ?? 'all', true)),
+  );
+
+  const initial = new URLSearchParams(location.search).get('cat');
+  if (initial && valid.has(initial)) apply(initial, false);
+</script>
+
+<style>
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .filters__count {
+    opacity: 0.6;
+    margin-left: 2px;
+  }
+</style>
