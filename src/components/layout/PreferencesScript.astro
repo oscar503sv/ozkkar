@@ -1,0 +1,44 @@
+---
+/**
+ * Runs before first paint to apply the saved theme and sidebar state,
+ * avoiding a flash of the wrong theme or layout.
+ */
+interface Props {
+  /** Only on `/`: send visitors whose browser isn't Spanish to `/en/`. */
+  redirectByBrowserLang?: boolean;
+}
+
+const { redirectByBrowserLang = false } = Astro.props;
+---
+
+<script is:inline>
+  (function () {
+    var root = document.documentElement;
+    var store = {
+      get: function (key) {
+        try {
+          return localStorage.getItem(key);
+        } catch (e) {
+          return null;
+        }
+      },
+    };
+    var theme = store.get('theme');
+    if (theme !== 'light' && theme !== 'dark') {
+      theme = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    root.dataset.theme = theme;
+    if (store.get('ozk-side') === '1') root.dataset.sidebar = 'collapsed';
+  })();
+</script>
+
+{redirectByBrowserLang && <script is:inline>
+  (function () {
+    var saved = null;
+    try {
+      saved = localStorage.getItem('lang');
+    } catch (e) {}
+    var lang = saved || (/^es/i.test(navigator.language || '') ? 'es' : 'en');
+    if (lang === 'en') location.replace('/en/');
+  })();
+</script>}

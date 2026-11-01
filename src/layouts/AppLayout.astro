@@ -1,0 +1,74 @@
+---
+import BaseHead, { type SeoProps } from '../components/layout/BaseHead.astro';
+import Footer from '../components/layout/Footer.astro';
+import MobileHeader from '../components/layout/MobileHeader.astro';
+import Sidebar from '../components/layout/Sidebar.astro';
+import type { Lang } from '../i18n/config';
+import type { RouteKey } from '../i18n/routes';
+
+interface Props extends SeoProps {
+  lang: Lang;
+  /** Nav item to highlight. */
+  active?: RouteKey;
+  /** Same page in the other language (language toggle + hreflang). */
+  alternateUrl: string;
+  redirectByBrowserLang?: boolean;
+}
+
+const { lang, active, alternateUrl, redirectByBrowserLang, ...seo } = Astro.props;
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <BaseHead
+      lang={lang}
+      alternateUrl={alternateUrl}
+      redirectByBrowserLang={redirectByBrowserLang}
+      {...seo}
+    />
+  </head>
+  <body>
+    <div class="shell">
+      <Sidebar lang={lang} active={active} alternateUrl={alternateUrl} />
+      <MobileHeader lang={lang} active={active} alternateUrl={alternateUrl} />
+      <main class="main">
+        <div class="main__inner">
+          <slot />
+          <Footer lang={lang} />
+        </div>
+      </main>
+    </div>
+  </body>
+</html>
+
+<style>
+  .shell {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  @media (min-width: 960px) {
+    .shell {
+      flex-direction: row;
+    }
+  }
+
+  .main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    padding: clamp(32px, 6vw, 80px) clamp(20px, 5vw, 72px) 40px;
+  }
+
+  .main__inner {
+    flex: 1;
+    width: 100%;
+    max-width: 960px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

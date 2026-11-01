@@ -1,0 +1,41 @@
+---
+import ElSalvadorFlag from '../ui/ElSalvadorFlag.astro';
+import { SITE } from '../../data/site';
+import type { Lang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+const year = new Date().getFullYear();
+---
+
+<footer class="footer">
+  <span class="footer__credit">
+    {`© ${year} ${SITE.author} · ${t.footer.madeIn}`}
+    <ElSalvadorFlag label={t.footer.country} />
+  </span>
+</footer>
+
+<style>
+  .footer {
+    margin-top: auto;
+    padding-top: 96px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 10px 24px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+
+  .footer__credit {
+    display: inline-flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+</style>

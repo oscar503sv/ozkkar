@@ -1,0 +1,331 @@
+---
+import Icon from '../ui/Icon.astro';
+import { NAV_ITEMS } from './navigation';
+import { SITE, SOCIALS } from '../../data/site';
+import { otherLang, type Lang } from '../../i18n/config';
+import { routePath, withLang, type RouteKey } from '../../i18n/routes';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+  active?: RouteKey;
+  alternateUrl: string;
+}
+
+const { lang, active, alternateUrl } = Astro.props;
+const t = useTranslations(lang);
+const targetLang = otherLang(lang);
+
+const socials = [
+  ...SOCIALS.map(({ label, href, icon }) => ({ label, href, icon, external: true })),
+  { label: 'Email', href: `mailto:${SITE.email}`, icon: 'envelope-simple', external: false },
+  { label: 'RSS', href: withLang(lang, 'rss.xml'), icon: 'rss', external: false },
+];
+---
+
+<aside class="sidebar">
+  <div class="sidebar__head">
+    <a href={routePath('home', lang)} class="sidebar__brand" title={SITE.author}>
+      <span class="monogram" aria-hidden="true">
+        OA
+      </span>
+      <span class="sidebar__brand-text label">
+        <span class="sidebar__name">{SITE.author}</span>
+        <span class="sidebar__domain">{SITE.domain}</span>
+      </span>
+      <span class="sr-only">{t.nav.home}</span>
+    </a>
+    <button
+      type="button"
+      class="icon-btn"
+      data-sidebar-toggle
+      data-label-collapse={t.sidebar.collapse}
+      data-label-expand={t.sidebar.expand}
+      aria-label={t.sidebar.collapse}
+      title={t.sidebar.collapse}
+      aria-expanded="true"
+    >
+      <Icon name="caret-double-left" size={18} class="when-expanded" />
+      <Icon name="sidebar-simple" size={18} class="when-collapsed" />
+    </button>
+  </div>
+
+  <nav class="sidebar__nav" aria-label={t.nav.label}>
+    {NAV_ITEMS.map(({ key, icon }) => (
+      <a
+        href={routePath(key, lang)}
+        class="item"
+        aria-current={active === key ? 'page' : undefined}
+        title={t.nav[key]}
+      >
+        <Icon name={icon} size={19} />
+        <span class="label">{t.nav[key]}</span>
+      </a>
+    ))}
+  </nav>
+
+  <div class="sidebar__foot">
+    <a
+      href={alternateUrl}
+      class="item"
+      hreflang={targetLang}
+      data-lang-switch={targetLang}
+      title={t.sidebar.switchLang}
+      aria-label={t.sidebar.switchLang}
+    >
+      <Icon name="translate" size={19} />
+      <span class="label label--grow">{t.sidebar.language}</span>
+      <span class="label lang-code">{lang.toUpperCase()}</span>
+    </a>
+
+    <button type="button" class="item" data-theme-toggle title={t.sidebar.themeToggle}>
+      <Icon name="moon" size={19} class="only-light" />
+      <Icon name="sun" size={19} class="only-dark" />
+      <span class="label only-light">{t.sidebar.toDark}</span>
+      <span class="label only-dark">{t.sidebar.toLight}</span>
+      <span class="sr-only">{t.sidebar.themeToggle}</span>
+    </button>
+
+    <div class="sidebar__social label">
+      {socials.map(({ label, href, icon, external }) => (
+        <a
+          href={href}
+          class="icon-btn icon-btn--lg"
+          aria-label={label}
+          title={label}
+          {...(external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        >
+          <Icon name={icon} size={18} />
+        </a>
+      ))}
+    </div>
+  </div>
+</aside>
+
+<script>
+  import '../../scripts/sidebar';
+  import '../../scripts/theme';
+  import '../../scripts/language';
+</script>
+
+<style>
+  .sidebar {
+    position: sticky;
+    top: 0;
+    flex: 0 0 var(--sidebar-w);
+    width: var(--sidebar-w);
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 20px 14px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow: hidden auto;
+    transition:
+      flex-basis 0.25s ease,
+      width 0.25s ease;
+  }
+
+  @media (max-width: 959.98px) {
+    .sidebar {
+      display: none;
+    }
+  }
+
+  /* ----- Header ----- */
+
+  .sidebar__head {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 4px 18px;
+  }
+
+  .sidebar__brand {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 12px;
+  }
+
+  .sidebar__brand:hover {
+    color: inherit;
+  }
+
+  .monogram {
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    background: var(--text);
+    color: var(--bg);
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    line-height: 1;
+  }
+
+  .sidebar__brand-text {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .sidebar__name {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 16px;
+  }
+
+  .sidebar__domain {
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* ----- Items ----- */
+
+  .sidebar__nav {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .item {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 42px;
+    padding: 0 12px;
+    border-radius: 11px;
+    font-size: 14.5px;
+    font-weight: 500;
+    white-space: nowrap;
+    color: var(--muted);
+    transition:
+      background 0.15s,
+      color 0.15s;
+  }
+
+  .item:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .item[aria-current='page'] {
+    background: var(--accent-soft);
+    color: var(--accent-ink);
+  }
+
+  .label--grow {
+    flex: 1;
+  }
+
+  .lang-code {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .sidebar__foot {
+    margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+
+  .sidebar__social {
+    display: flex;
+    gap: 2px;
+    padding: 10px 4px 0;
+  }
+
+  /* ----- Icon buttons ----- */
+
+  .icon-btn {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    flex: none;
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 9px;
+    color: var(--muted);
+  }
+
+  .icon-btn--lg {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+  }
+
+  .icon-btn:hover {
+    background: var(--surface-2);
+    color: var(--text);
+  }
+
+  .icon-btn:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  /* ----- Collapsed state (set on <html> before paint) ----- */
+
+  .sidebar :global(.when-collapsed) {
+    display: none;
+  }
+
+  :global(:root[data-sidebar='collapsed']) .sidebar {
+    flex-basis: var(--sidebar-w-collapsed);
+    width: var(--sidebar-w-collapsed);
+  }
+
+  :global(:root[data-sidebar='collapsed']) .sidebar__head {
+    flex-direction: column;
+  }
+
+  :global(:root[data-sidebar='collapsed']) .sidebar__brand {
+    flex: none;
+  }
+
+  :global(:root[data-sidebar='collapsed']) .label {
+    display: none !important;
+  }
+
+  :global(:root[data-sidebar='collapsed']) .item {
+    justify-content: center;
+  }
+
+  :global(:root[data-sidebar='collapsed']) .sidebar :global(.when-expanded) {
+    display: none;
+  }
+
+  :global(:root[data-sidebar='collapsed']) .sidebar :global(.when-collapsed) {
+    display: inline-block;
+  }
+</style>
