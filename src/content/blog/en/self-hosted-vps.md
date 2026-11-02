@@ -1,7 +1,7 @@
 ---
 title: 'My VPS as a deployment platform: Hetzner + Coolify + Cloudflare'
 description: 'How I built my own "mini Vercel": a hardened Ubuntu server, containerized apps with Coolify, DNS and TLS with Cloudflare, and monitoring with Uptime Kuma.'
-pubDate: 2026-11-01
+pubDate: 2026-10-20
 cover: ../../../assets/blog/self-hosted-vps.webp
 coverAlt: 'Hetzner server with Coolify, Cloudflare and Uptime Kuma as a deployment platform'
 tags: [linux, ubuntu, docker, devops, self-hosting]

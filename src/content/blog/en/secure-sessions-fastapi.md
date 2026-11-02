@@ -1,7 +1,7 @@
 ---
 title: 'Secure sessions in a SPA: httpOnly cookies + CSRF with FastAPI and React'
 description: 'Why I do not store the JWT in localStorage, how I configure session cookies, and how I implemented CSRF protection with the double-submit pattern in MediCore.'
-pubDate: 2026-11-01
+pubDate: 2026-10-06
 cover: ../../../assets/blog/secure-sessions-fastapi.webp
 coverAlt: 'Diagram of secure sessions between a React SPA and a FastAPI API'
 tags: [fastapi, python, react, security, auth]
