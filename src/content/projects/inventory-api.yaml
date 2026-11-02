@@ -1,12 +1,13 @@
-name: Inventory API
+name: Inventory ERP
 order: 6
 categories: [backend]
 role: author
+status: development
 kind:
-  es: API REST de inventario
-  en: Inventory REST API
+  es: Sistema de inventario empresarial · Monolito modular
+  en: Enterprise inventory system · Modular monolith
 description:
-  es: API de inventario en C# con Entity Framework Core, construida por módulos siguiendo buenas prácticas de .NET.
-  en: C# inventory API with Entity Framework Core, built in modules following .NET best practices.
-stack: [ASP.NET Core, EF Core, MariaDB]
+  es: 'ERP de inventario en .NET 10 con Clean Architecture. El stock nunca se edita directamente: se calcula por bodega a partir de movimientos (entradas, salidas, traslados y ajustes) con kardex, permisos por rol y bodega, y auditoría de cada acción. Primera fase del backend terminada y cubierta por pruebas.'
+  en: 'Inventory ERP built on .NET 10 with Clean Architecture. Stock is never edited directly: it is computed per warehouse from movements (receipts, issues, transfers and adjustments) with a stock ledger, role- and warehouse-scoped permissions, and auditing of every action. The first backend phase is complete and covered by tests.'
+stack: [.NET 10, ASP.NET Core, EF Core, PostgreSQL, Redis, RabbitMQ]
 repo: https://github.com/oscar503sv/inventory

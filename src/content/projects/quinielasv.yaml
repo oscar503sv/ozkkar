@@ -1,5 +1,5 @@
 name: QuinielaSV
-order: 3
+order: 2
 categories: [web]
 role: author
 kind:
@@ -10,6 +10,9 @@ description:
   en: 'Players predict every match and earn points based on accuracy and tournament stage, with bonuses for the champion and teams that advance. Includes private leagues with invite codes, a ranking with tiebreakers and an admin panel to enter results and recalculate scores.'
 stack: [Next.js, React, TypeScript, Firebase, Tailwind CSS]
 repo: https://github.com/oscar503sv/quinielasv
+live: https://www.quinielasv.xyz/
+status: production
+screenshot: ../../assets/projects/quinielasv.png
 featured: true
 stat:
   value: 600+
