@@ -17,6 +17,8 @@ export const contactSchema = z.object({
   message: z.string().trim().min(1).max(5000),
   /** Honeypot: real visitors never fill it in. */
   website: z.string().optional().default(''),
+  /** Cloudflare Turnstile token, verified server-side. */
+  turnstileToken: z.string().max(2048).optional().default(''),
 });
 
 export type ContactPayload = z.infer<typeof contactSchema>;

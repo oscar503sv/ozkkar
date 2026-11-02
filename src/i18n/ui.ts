@@ -133,6 +133,10 @@ const es = {
     sentBody: 'Gracias por escribir. Te responderé al correo que dejaste.',
     another: 'Enviar otro mensaje',
     error: 'No se pudo enviar el mensaje. Inténtalo de nuevo o escríbeme a {email}.',
+    errorCaptcha:
+      'No pudimos verificar que eres una persona. Espera unos segundos e inténtalo de nuevo.',
+    errorRateLimited: 'Ya enviaste varios mensajes. Inténtalo más tarde o escríbeme a {email}.',
+    verification: 'Verificación anti-spam',
   },
   notFound: {
     title: 'No encontramos esta página.',
@@ -275,6 +279,10 @@ const en: Dictionary = {
     sentBody: "Thanks for writing. I'll reply to the email you left.",
     another: 'Send another message',
     error: "The message couldn't be sent. Please try again or email me at {email}.",
+    errorCaptcha: "We couldn't verify you're human. Wait a few seconds and try again.",
+    errorRateLimited:
+      "You've already sent several messages. Please try again later or email me at {email}.",
+    verification: 'Anti-spam check',
   },
   notFound: {
     title: "We couldn't find this page.",

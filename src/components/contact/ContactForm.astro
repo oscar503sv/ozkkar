@@ -1,9 +1,11 @@
 ---
 /**
  * Contact form. Topic and project type are native radio inputs styled as
- * rows/chips; conditional fields are toggled with CSS `:has()`. JS only
- * handles the placeholder and the async submit states.
+ * rows/chips; conditional fields are toggled with CSS `:has()`. JS handles
+ * the placeholder, the Turnstile anti-bot widget and the async submit states.
  */
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
 import { SITE } from '../../data/site';
@@ -118,6 +120,17 @@ const placeholders = Object.fromEntries(CONTACT_TOPICS.map((v, i) => [v, t.place
       </label>
     </div>
 
+    {PUBLIC_TURNSTILE_SITE_KEY && (
+      <div
+        class="turnstile"
+        role="group"
+        aria-label={t.verification}
+        data-turnstile
+        data-sitekey={PUBLIC_TURNSTILE_SITE_KEY}
+        data-lang={lang}
+      />
+    )}
+
     <div class="footer">
       <span class="privacy">
         <Icon name="shield-check" />
@@ -135,7 +148,13 @@ const placeholders = Object.fromEntries(CONTACT_TOPICS.map((v, i) => [v, t.place
       </Button>
     </div>
     <p class="error" role="alert" data-contact-error hidden>
-      {format(t.error, { email: SITE.email })}
+      <span data-error="generic">{format(t.error, { email: SITE.email })}</span>
+      <span data-error="captcha_failed" hidden>
+        {t.errorCaptcha}
+      </span>
+      <span data-error="rate_limited" hidden>
+        {format(t.errorRateLimited, { email: SITE.email })}
+      </span>
     </p>
   </form>
 
@@ -152,6 +171,35 @@ const placeholders = Object.fromEntries(CONTACT_TOPICS.map((v, i) => [v, t.place
 </div>
 
 <script>
+  interface TurnstileApi {
+    render(container: HTMLElement, options: Record<string, unknown>): string;
+    reset(widgetId: string): void;
+  }
+
+  const TURNSTILE_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+
+  /** Loads Turnstile once and renders the widget (invisible unless a challenge is needed). */
+  function mountTurnstile(container: HTMLElement): Promise<{ reset(): void }> {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = TURNSTILE_SRC;
+      script.async = true;
+      script.onerror = reject;
+      script.onload = () => {
+        const api = (window as unknown as { turnstile: TurnstileApi }).turnstile;
+        const id = api.render(container, {
+          sitekey: container.dataset.sitekey,
+          language: container.dataset.lang,
+          theme: document.documentElement.dataset.theme === 'dark' ? 'dark' : 'light',
+          appearance: 'interaction-only',
+          'response-field-name': 'turnstileToken',
+        });
+        resolve({ reset: () => api.reset(id) });
+      };
+      document.head.append(script);
+    });
+  }
+
   const root = document.querySelector<HTMLElement>('[data-contact]');
   const form = root?.querySelector<HTMLFormElement>('[data-contact-form]');
 
@@ -163,6 +211,19 @@ const placeholders = Object.fromEntries(CONTACT_TOPICS.map((v, i) => [v, t.place
     const reset = root.querySelector<HTMLButtonElement>('[data-contact-reset]')!;
     const idleLabel = submit.querySelector<HTMLElement>('[data-state="idle"]')!;
     const sendingLabel = submit.querySelector<HTMLElement>('[data-state="sending"]')!;
+    const errorMessages = error.querySelectorAll<HTMLElement>('[data-error]');
+    const turnstileContainer = form.querySelector<HTMLElement>('[data-turnstile]');
+    const turnstile = turnstileContainer
+      ? mountTurnstile(turnstileContainer).catch(() => null)
+      : Promise.resolve(null);
+
+    const showError = (code: string) => {
+      const known = [...errorMessages].some((el) => el.dataset.error === code);
+      errorMessages.forEach((el) => {
+        el.hidden = el.dataset.error !== (known ? code : 'generic');
+      });
+      error.hidden = false;
+    };
 
     const syncPlaceholder = () => {
       const checked = form.querySelector<HTMLInputElement>('input[name="topic"]:checked');
@@ -193,15 +254,21 @@ const placeholders = Object.fromEntries(CONTACT_TOPICS.map((v, i) => [v, t.place
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(Object.fromEntries(new FormData(form))),
         });
-        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        if (!response.ok) {
+          const result = (await response.json().catch(() => ({}))) as { error?: string };
+          showError(result.error ?? 'generic');
+          return;
+        }
 
         form.hidden = true;
         success.hidden = false;
         success.focus();
       } catch {
-        error.hidden = false;
+        showError('generic');
       } finally {
         setSending(false);
+        // Turnstile tokens are single-use: get a fresh one for the next attempt.
+        (await turnstile)?.reset();
       }
     });
 
@@ -427,6 +494,10 @@ const placeholders = Object.fromEntries(CONTACT_TOPICS.map((v, i) => [v, t.place
   .input--area {
     min-height: 150px;
     resize: vertical;
+  }
+
+  .turnstile:empty {
+    display: none;
   }
 
   .honeypot {

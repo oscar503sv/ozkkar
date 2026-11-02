@@ -19,11 +19,19 @@ Requiere Node.js ≥ 22.
 Copia `.env.example` a `.env`. El formulario de contacto envía el correo con
 [Resend](https://resend.com):
 
-| Variable             | Uso                                      | Por defecto                       |
-| -------------------- | ---------------------------------------- | --------------------------------- |
-| `RESEND_API_KEY`     | API key de Resend (secreta)              | —                                 |
-| `CONTACT_TO_EMAIL`   | Dónde llegan los mensajes                | `hello@ozkkar.dev`                |
-| `CONTACT_FROM_EMAIL` | Remitente (dominio verificado en Resend) | `ozkkar.dev <contact@ozkkar.dev>` |
+| Variable                            | Uso                                                                                      | Por defecto                       |
+| ----------------------------------- | ---------------------------------------------------------------------------------------- | --------------------------------- |
+| `RESEND_API_KEY`                    | API key de Resend (secreta)                                                              | —                                 |
+| `CONTACT_TO_EMAIL`                  | Dónde llegan los mensajes                                                                | `hello@ozkkar.dev`                |
+| `CONTACT_FROM_EMAIL`                | Remitente (dominio verificado en Resend)                                                 | `ozkkar.dev <contact@ozkkar.dev>` |
+| `PUBLIC_TURNSTILE_SITE_KEY`         | Clave pública de Cloudflare Turnstile                                                    | —                                 |
+| `TURNSTILE_SECRET_KEY`              | Clave secreta de Turnstile                                                               | —                                 |
+| `UPSTASH_REDIS_REST_URL` / `_TOKEN` | Redis para el límite por IP (o `KV_REST_API_URL` / `_TOKEN` de la integración de Vercel) | —                                 |
+
+**Protección del formulario:** campo trampa (honeypot), verificación de
+Cloudflare Turnstile en el servidor y un máximo de 4 mensajes por IP cada 24 h
+(`src/lib/security/`). Si faltan las claves de Turnstile o de Upstash, esa
+capa se omite y se registra un aviso en los logs.
 
 En Vercel, configúralas en _Project → Settings → Environment Variables_.
 
