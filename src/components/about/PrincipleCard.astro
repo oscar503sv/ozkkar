@@ -1,0 +1,55 @@
+---
+/** One "How I work" principle. */
+import Icon from '../ui/Icon.astro';
+import type { Principle } from '../../data/about';
+import type { Lang } from '../../i18n/config';
+
+interface Props {
+  principle: Principle;
+  lang: Lang;
+}
+
+const { principle, lang } = Astro.props;
+---
+
+<article class="principle">
+  <span class="principle__icon">
+    <Icon name={principle.icon} size={22} />
+  </span>
+  <h3 class="principle__title">{principle.title[lang]}</h3>
+  <p class="principle__body">{principle.body[lang]}</p>
+</article>
+
+<style>
+  .principle {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 24px;
+    border-radius: 20px;
+    background: var(--surface-2);
+  }
+
+  .principle__icon {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 6px;
+    border-radius: 13px;
+    display: grid;
+    place-items: center;
+    background: var(--surface);
+    color: var(--accent-ink);
+  }
+
+  .principle__title {
+    font-size: 19px;
+    letter-spacing: -0.015em;
+  }
+
+  .principle__body {
+    font-size: 15px;
+    line-height: 1.6;
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+</style>

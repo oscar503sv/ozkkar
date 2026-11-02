@@ -1,12 +1,20 @@
 ---
+import { Image } from 'astro:assets';
+
+import CoreStack from '../components/about/CoreStack.astro';
+import NowCard from '../components/about/NowCard.astro';
+import PrincipleCard from '../components/about/PrincipleCard.astro';
 import SkillCard from '../components/about/SkillCard.astro';
+import CallToAction from '../components/home/CallToAction.astro';
 import SectionHeader from '../components/ui/SectionHeader.astro';
 import AppLayout from '../layouts/AppLayout.astro';
+import { PRINCIPLES } from '../data/about';
 import { SKILLS } from '../data/skills';
 import { otherLang, type Lang } from '../i18n/config';
 import { routePath } from '../i18n/routes';
 import { useTranslations } from '../i18n/utils';
 import { profilePageSchema } from '../lib/seo/structured-data';
+import aboutPhoto from '../assets/aboutme.webp';
 
 interface Props {
   lang: Lang;
@@ -23,6 +31,8 @@ const [lead, ...rest] = t.about.profile;
   alternateUrl={routePath('about', otherLang(lang))}
   title={t.about.title}
   description={t.about.description}
+  image={aboutPhoto}
+  imageAlt={t.about.photoAlt}
   schema={({ canonical, image }) => [profilePageSchema(lang, canonical, image)]}
 >
   <div class="page">
@@ -34,14 +44,39 @@ const [lead, ...rest] = t.about.profile;
       ))}
     </header>
 
-    <section class="skills" aria-labelledby="skills-title">
+    <div class="showcase">
+      <Image
+        src={aboutPhoto}
+        alt={t.about.photoAlt}
+        widths={[480, 720, 1080]}
+        sizes="(min-width: 1180px) 540px, (min-width: 760px) 55vw, 100vw"
+        loading="eager"
+        fetchpriority="high"
+        class="showcase__photo"
+      />
+      <NowCard lang={lang} />
+    </div>
+
+    <section class="section" aria-labelledby="principles-title">
+      <SectionHeader id="principles-title" title={t.about.howIWork} size="md" />
+      <div class="principles">
+        {PRINCIPLES.map((principle) => (
+          <PrincipleCard principle={principle} lang={lang} />
+        ))}
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="skills-title">
       <SectionHeader id="skills-title" title={t.about.skills} size="md" />
-      <div class="skills__grid">
+      <CoreStack lang={lang} />
+      <div class="skills">
         {SKILLS.map((skill) => (
           <SkillCard skill={skill} lang={lang} />
         ))}
       </div>
     </section>
+
+    <CallToAction lang={lang} />
   </div>
 </AppLayout>
 
@@ -78,13 +113,46 @@ const [lead, ...rest] = t.about.profile;
     text-wrap: pretty;
   }
 
-  .skills {
+  /* Photo + "right now" card, side by side on wide screens. */
+  .showcase {
+    display: grid;
+    gap: 16px;
+    margin-top: -16px;
+  }
+
+  @media (min-width: 760px) {
+    .showcase {
+      grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr);
+      align-items: stretch;
+    }
+  }
+
+  .showcase :global(.showcase__photo) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    min-height: 260px;
+    aspect-ratio: 3 / 2;
+    object-fit: cover;
+    border-radius: 24px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .section {
     display: flex;
     flex-direction: column;
     gap: 20px;
   }
 
-  .skills__grid {
+  /* Four cards: 2 × 2 on wide screens, never 3 + 1. */
+  .principles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+    gap: 16px;
+  }
+
+  .skills {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr));
     gap: 16px;

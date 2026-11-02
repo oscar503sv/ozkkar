@@ -1,0 +1,59 @@
+---
+/** Highlighted main stack, shown above the skill groups. */
+import Badge from '../ui/Badge.astro';
+import Icon from '../ui/Icon.astro';
+import { CORE_STACK, coreLabel } from '../../data/skills';
+import type { Lang } from '../../i18n/config';
+import { useTranslations } from '../../i18n/utils';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = useTranslations(lang);
+---
+
+<div class="core">
+  <p class="core__label">
+    <Icon name="star" size={16} />
+    {t.about.coreStack}
+  </p>
+  <ul class="core__items">
+    {CORE_STACK.map((item) => (
+      <li>
+        <Badge tone="accent">{coreLabel(item)}</Badge>
+      </li>
+    ))}
+  </ul>
+</div>
+
+<style>
+  .core {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px 18px;
+    padding: 18px 22px;
+    border-radius: 20px;
+    border: 1px dashed color-mix(in oklch, var(--accent) 45%, transparent);
+  }
+
+  .core__label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--accent-ink);
+  }
+
+  .core__items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+</style>

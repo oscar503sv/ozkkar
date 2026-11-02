@@ -60,6 +60,29 @@ export const SKILLS: SkillGroup[] = [
   },
 ];
 
+/** Main stack: highlighted at the top of the skills section and inside each group. */
+export const CORE_STACK = [
+  'Python',
+  'TypeScript',
+  'FastAPI',
+  'React',
+  'Next.js',
+  'PostgreSQL',
+  'Docker',
+  'Linux (Ubuntu Server, Fedora, Arch)',
+];
+
+export function isCoreSkill(item: string): boolean {
+  return CORE_STACK.includes(item);
+}
+
+/** Short label for the core stack strip. */
+export function coreLabel(item: string): string {
+  return item.replace(/\s*\(.*\)$/, '');
+}
+
+/** Items of a group in the given language, core skills first. */
 export function skillItems(skill: SkillGroup, lang: Lang): string[] {
-  return Array.isArray(skill.items) ? skill.items : skill.items[lang];
+  const items = Array.isArray(skill.items) ? skill.items : skill.items[lang];
+  return [...items.filter(isCoreSkill), ...items.filter((item) => !isCoreSkill(item))];
 }

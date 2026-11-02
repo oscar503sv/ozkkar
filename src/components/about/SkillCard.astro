@@ -1,7 +1,7 @@
 ---
 import Badge from '../ui/Badge.astro';
 import Icon from '../ui/Icon.astro';
-import { skillItems, type SkillGroup } from '../../data/skills';
+import { isCoreSkill, skillItems, type SkillGroup } from '../../data/skills';
 import type { Lang } from '../../i18n/config';
 
 interface Props {
@@ -22,7 +22,7 @@ const { skill, lang } = Astro.props;
   <ul class="skill__items">
     {skillItems(skill, lang).map((item) => (
       <li>
-        <Badge tone="neutral">{item}</Badge>
+        <Badge tone={isCoreSkill(item) ? 'accent' : 'neutral'}>{item}</Badge>
       </li>
     ))}
   </ul>

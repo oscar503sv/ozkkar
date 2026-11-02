@@ -92,10 +92,14 @@ const es = {
       'Oscar Aragón, desarrollador full-stack en San Salvador: quién soy, cómo trabajo y las tecnologías que uso, de Python y TypeScript a Docker y Linux.',
     profile: [
       'Soy desarrollador full-stack en San Salvador. Construyo software para resolver problemas concretos: sistemas para organizaciones sociales, automatizaciones que eliminan trabajo manual y proyectos propios que corren en producción sobre servidores que administro yo mismo.',
-      'Mi fuerte es el backend. Trabajo con Python, PHP, TypeScript y C#, y le doy la misma importancia a la arquitectura, las pruebas y el despliegue que a que el código funcione. También sé sentarme con personas no técnicas, entender cómo trabajan y convertir eso en una herramienta que de verdad usen.',
-      'Estoy terminando Ingeniería en Ciencias de la Computación en la Universidad Don Bosco. Uso Linux a diario, contribuyo a software libre y desarrollo Reelix, una app nativa para grabar pantalla y cámara.',
+      'Mi fuerte es el backend. Trabajo con Python, PHP, TypeScript y C#, y le doy la misma importancia a la arquitectura, las pruebas y el despliegue que a que el código funcione.',
     ],
+    photoAlt:
+      'Ilustración de Oscar programando en su escritorio, con un gato dormido junto al teclado',
+    now: 'Ahora mismo',
+    howIWork: 'Cómo trabajo',
     skills: 'Habilidades',
+    coreStack: 'Stack principal',
   },
   contact: {
     title: 'Hablemos',
@@ -238,10 +242,13 @@ const en: Dictionary = {
       'Oscar Aragón, full-stack developer in San Salvador: who I am, how I work and the technologies I use, from Python and TypeScript to Docker and Linux.',
     profile: [
       "I'm a full-stack developer based in San Salvador. I build software that solves concrete problems: systems for nonprofits, automations that remove manual work, and my own projects running in production on servers I manage myself.",
-      "Backend is my strength. I work with Python, PHP, TypeScript and C#, and I care as much about architecture, testing and deployment as I do about the code working. I'm also comfortable sitting down with non-technical people, understanding how they work and turning that into a tool they actually use.",
-      "I'm finishing a degree in Computer Science Engineering at Universidad Don Bosco. I use Linux every day, contribute to open source, and I build Reelix, a native app for recording your screen and camera.",
+      'Backend is my strength. I work with Python, PHP, TypeScript and C#, and I care as much about architecture, testing and deployment as I do about the code working.',
     ],
+    photoAlt: 'Illustration of Oscar coding at his desk, with a cat asleep next to the keyboard',
+    now: 'Right now',
+    howIWork: 'How I work',
     skills: 'Skills',
+    coreStack: 'Core stack',
   },
   contact: {
     title: "Let's talk",
