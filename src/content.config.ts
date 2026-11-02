@@ -50,12 +50,16 @@ const projects = defineCollection({
       live: z.url().optional(),
       download: z.url().optional(),
       stat: z.object({ value: z.string(), label: localized }).optional(),
+      /** Lifecycle badge on the card. Omit when it doesn't apply. */
+      status: z.enum(['production', 'development']).optional(),
+      /** Card image (landscape works best). Path relative to the YAML file. */
+      screenshot: image().optional(),
       /** Shown in the "Featured projects" grid on the home page. */
       featured: z.boolean().default(false),
       /** Shown as the large spotlight card on the home page (use on one project). */
       spotlight: z
         .object({
-          status: localized,
+          badge: localized,
           note: localized.optional(),
           screenshot: image().optional(),
           screenshotDark: image().optional(),

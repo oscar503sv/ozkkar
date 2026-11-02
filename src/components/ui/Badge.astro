@@ -1,7 +1,7 @@
 ---
 /** Small rounded label: stack chips, status pills, role badges and tags. */
 interface Props {
-  tone?: 'neutral' | 'muted' | 'accent' | 'accent-2';
+  tone?: 'neutral' | 'muted' | 'accent' | 'accent-2' | 'success';
   size?: 'sm' | 'md';
   dot?: boolean;
   weight?: 'regular' | 'medium';
@@ -67,10 +67,23 @@ const resolvedWeight = weight ?? (tone === 'muted' || tone === 'neutral' ? 'regu
     color: var(--accent-2-ink);
   }
 
+  .badge--success {
+    background: var(--ok-soft);
+    color: var(--ok-ink);
+  }
+
   .badge__dot {
     width: 7px;
     height: 7px;
     border-radius: 50%;
     background: var(--accent-2);
+  }
+
+  .badge--accent .badge__dot {
+    background: var(--accent);
+  }
+
+  .badge--success .badge__dot {
+    background: var(--ok);
   }
 </style>

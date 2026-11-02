@@ -16,7 +16,7 @@ export function projectIcon(project: ProjectEntry): string {
   return project.data.icon ?? CATEGORY_ICONS[project.data.categories[0]!];
 }
 
-/** Best URL for a whole-card link: repository, then live site, then download. */
+/** Best URL for a whole-card link: live site, then repository, then download. */
 export function projectUrl(project: ProjectEntry): string | undefined {
-  return project.data.repo ?? project.data.live ?? project.data.download;
+  return project.data.live ?? project.data.repo ?? project.data.download;
 }

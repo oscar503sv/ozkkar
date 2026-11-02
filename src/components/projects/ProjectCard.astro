@@ -3,11 +3,14 @@
  * Project card.
  * - `compact` (home): the whole card links to the project, shows the metric pill.
  * - `full` (projects page): role badge, footer links and filter metadata.
+ * Both show the screenshot and the status badge when the project has them.
  */
+import { Image } from 'astro:assets';
+
 import Badge from '../ui/Badge.astro';
 import Icon from '../ui/Icon.astro';
 import type { Lang } from '../../i18n/config';
-import { useTranslations } from '../../i18n/utils';
+import { format, useTranslations } from '../../i18n/utils';
 import { projectIcon, projectUrl, type ProjectEntry } from '../../lib/projects';
 
 interface Props {
@@ -26,6 +29,11 @@ const ROLE_TONES = {
   team: 'accent',
   contributor: 'accent-2',
 } as const satisfies Record<typeof data.role, string>;
+
+const STATUS_TONES = {
+  production: 'success',
+  development: 'accent-2',
+} as const satisfies Record<NonNullable<typeof data.status>, string>;
 const Heading = headingLevel;
 
 const href = variant === 'compact' ? projectUrl(project) : undefined;
@@ -45,17 +53,35 @@ const links = [
   data-categories={data.categories.join(' ')}
   {...rootAttrs}
 >
+  {data.screenshot && (
+    <div class="card__media">
+      <Image
+        src={data.screenshot}
+        alt={format(t.projects.screenshotAlt, { name: data.name })}
+        widths={[480, 960]}
+        sizes="(min-width: 960px) 440px, 90vw"
+      />
+    </div>
+  )}
+
   <div class="card__top">
     <span class="card__icon">
       <Icon name={projectIcon(project)} size={22} />
     </span>
-    {variant === 'compact' ? (
-      href && <Icon name="arrow-up-right" size={20} class="card__arrow" />
-    ) : (
-      <Badge tone={ROLE_TONES[data.role]} size="sm" weight="medium">
-        {t.projects[data.role]}
-      </Badge>
-    )}
+    <span class="card__badges">
+      {data.status && (
+        <Badge tone={STATUS_TONES[data.status]} size="sm" dot>
+          {t.projects.status[data.status]}
+        </Badge>
+      )}
+      {variant === 'compact' ? (
+        href && <Icon name="arrow-up-right" size={20} class="card__arrow" />
+      ) : (
+        <Badge tone={ROLE_TONES[data.role]} size="sm" weight="medium">
+          {t.projects[data.role]}
+        </Badge>
+      )}
+    </span>
   </div>
 
   <div>
@@ -114,6 +140,36 @@ const links = [
     justify-content: space-between;
     align-items: center;
     gap: 10px;
+  }
+
+  .card__media {
+    aspect-ratio: 16 / 9;
+    margin: -10px -10px 4px;
+    border-radius: 14px;
+    overflow: hidden;
+    background: var(--surface-2);
+    box-shadow: inset 0 0 0 1px var(--border);
+  }
+
+  .card__media :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+    transition: scale 0.3s ease;
+  }
+
+  .card--link:hover .card__media :global(img) {
+    scale: 1.02;
+  }
+
+  .card__badges {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 6px;
   }
 
   .card__icon {

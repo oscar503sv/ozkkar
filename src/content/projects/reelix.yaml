@@ -1,5 +1,5 @@
 name: Reelix
-order: 1
+order: 3
 categories: [oss]
 role: author
 icon: record
@@ -13,7 +13,7 @@ stack: [Rust, GTK4, libadwaita, PipeWire, GStreamer]
 repo: https://github.com/oscar503sv/reelix
 download: https://github.com/oscar503sv/reelix/releases/latest
 spotlight:
-  status:
+  badge:
     es: Ya disponible
     en: Now available
   note:
