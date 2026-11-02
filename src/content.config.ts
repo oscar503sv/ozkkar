@@ -16,7 +16,8 @@ const blog = defineCollection({
   schema: ({ image }) =>
     z.object({
       title: z.string(),
-      description: z.string(),
+      /** Also the meta description: search engines cut it after ~160 characters. */
+      description: z.string().min(50).max(160),
       pubDate: z.coerce.date(),
       updatedDate: z.coerce.date().optional(),
       tags: z.array(z.string()).default([]),

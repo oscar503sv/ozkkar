@@ -1,6 +1,6 @@
 ---
 title: 'Grabar la pantalla en Wayland: lo que aprendí construyendo Reelix'
-description: 'Por qué en Wayland no puedes capturar la pantalla "como en X11" y cómo funciona el camino moderno: xdg-desktop-portal, PipeWire y GStreamer, con ejemplos en Rust.'
+description: 'Por qué en Wayland no puedes capturar la pantalla "como en X11" y cómo funciona el camino moderno con xdg-desktop-portal, PipeWire y GStreamer en Rust.'
 pubDate: 2026-11-01
 cover: ../../../assets/blog/wayland-screen-recording.webp
 coverAlt: 'Diagrama del flujo de captura en Wayland: Reelix, xdg-desktop-portal, PipeWire y GStreamer'

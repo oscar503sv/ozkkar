@@ -47,7 +47,7 @@ const es = {
     title: 'Proyectos',
     intro: 'Sistemas en producción, proyectos personales y contribuciones a software libre.',
     seoDescription:
-      'Proyectos de Oscar Aragón, desarrollador full-stack: sistemas en producción con React, FastAPI, .NET y Node.js, apps nativas para Linux como Reelix y contribuciones a software libre.',
+      'Proyectos de Oscar Aragón, desarrollador full-stack: sistemas en producción con React, FastAPI y .NET, apps para Linux como Reelix y software libre.',
     filters: {
       all: 'Todos',
       backend: 'Backend',
@@ -197,7 +197,7 @@ const en: Dictionary = {
     title: 'Projects',
     intro: 'Production systems, personal projects and open source contributions.',
     seoDescription:
-      'Projects by Oscar Aragón, full-stack developer: production systems built with React, FastAPI, .NET and Node.js, native Linux apps like Reelix, and open source contributions.',
+      'Projects by Oscar Aragón, full-stack developer: production systems built with React, FastAPI and .NET, Linux apps like Reelix, and open source work.',
     filters: {
       all: 'All',
       backend: 'Backend',

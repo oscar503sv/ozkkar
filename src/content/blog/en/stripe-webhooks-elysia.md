@@ -1,6 +1,6 @@
 ---
 title: 'Stripe payments without surprises: idempotent webhooks in Bun + Elysia'
-description: 'Why I confirm payments in the webhook and not on the redirect, how to verify the signature in Elysia, how to avoid duplicate tickets, and how to generate the QR only once the payment is confirmed.'
+description: 'Why I confirm payments in the webhook and not on the redirect, how to verify the signature in Elysia, and how to avoid duplicate tickets.'
 pubDate: 2026-09-15
 cover: ../../../assets/blog/stripe-webhooks-elysia.webp
 coverAlt: 'Payment flow with Stripe Checkout, webhook, idempotency and QR ticket in Bun and Elysia'
