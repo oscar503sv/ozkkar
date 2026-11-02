@@ -6,6 +6,7 @@ import { SKILLS } from '../data/skills';
 import { otherLang, type Lang } from '../i18n/config';
 import { routePath } from '../i18n/routes';
 import { useTranslations } from '../i18n/utils';
+import { profilePageSchema } from '../lib/seo/structured-data';
 
 interface Props {
   lang: Lang;
@@ -22,6 +23,7 @@ const [lead, ...rest] = t.about.profile;
   alternateUrl={routePath('about', otherLang(lang))}
   title={t.about.title}
   description={t.about.description}
+  schema={({ canonical, image }) => [profilePageSchema(lang, canonical, image)]}
 >
   <div class="page">
     <header class="intro">

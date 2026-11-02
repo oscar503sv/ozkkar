@@ -11,11 +11,14 @@ export const ROUTES = {
 
 export type RouteKey = keyof typeof ROUTES;
 
-/** Prefixes a path with the language segment (none for the default language). */
+/**
+ * Prefixes a path with the language segment (none for the default language).
+ * Always ends with a slash so internal links match canonical URLs and the sitemap.
+ */
 export function withLang(lang: Lang, path = ''): string {
   const clean = path.replace(/^\/+|\/+$/g, '');
   const prefix = lang === DEFAULT_LANG ? '' : `/${lang}`;
-  return clean ? `${prefix}/${clean}` : `${prefix}/`;
+  return clean ? `${prefix}/${clean}/` : `${prefix}/`;
 }
 
 export function routePath(route: RouteKey, lang: Lang): string {

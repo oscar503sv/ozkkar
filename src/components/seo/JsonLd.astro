@@ -1,0 +1,18 @@
+---
+/** Renders schema.org nodes as a single JSON-LD `@graph`. */
+import type { Schema } from '../../lib/seo/structured-data';
+
+interface Props {
+  schema: Schema[];
+}
+
+const { schema } = Astro.props;
+
+// Escape `<` so a value can never close the <script> tag.
+const json = JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }).replace(
+  /</g,
+  '\\u003c',
+);
+---
+
+{schema.length > 0 && <script type="application/ld+json" set:html={json} />}

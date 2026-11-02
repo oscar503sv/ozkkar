@@ -96,4 +96,9 @@ src/
 - **Código en posts**: Shiki con un transformer propio que añade la cabecera
   con el lenguaje y el botón "Copiar".
 - **Iconos**: Phosphor, renderizados como SVG en el build (sin JS ni fuentes).
-- **Sitemap**: `/sitemap-index.xml`.
+- **SEO**: canonical, hreflang (`es`, `en`, `x-default`), Open Graph/Twitter y
+  JSON-LD (`WebSite`, `Person`, `ProfilePage`, `BlogPosting`, `BreadcrumbList`)
+  desde `src/components/layout/BaseHead.astro` y `src/lib/seo/`. Los posts sin
+  traducción apuntan su canonical al original para no duplicar contenido.
+- **Sitemap**: `/sitemap-index.xml`, con `lastmod` en los posts y sin las copias
+  de posts no traducidos.

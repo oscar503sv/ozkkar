@@ -46,6 +46,8 @@ const es = {
   projects: {
     title: 'Proyectos',
     intro: 'Sistemas en producción, proyectos personales y contribuciones a software libre.',
+    seoDescription:
+      'Proyectos de Oscar Aragón, desarrollador full-stack: sistemas en producción con React, FastAPI, .NET y Node.js, apps nativas para Linux como Reelix y contribuciones a software libre.',
     filters: {
       all: 'Todos',
       backend: 'Backend',
@@ -70,6 +72,8 @@ const es = {
     title: 'Blog',
     intro:
       'Mi colección personal de fragmentos de código, guías para principiantes, tutoriales y cosas interesantes que he encontrado en la web. Espero que encuentres algo útil aquí.',
+    seoDescription:
+      'Blog de Oscar Aragón sobre desarrollo web, backend, seguridad, Linux y self-hosting: tutoriales prácticos y lo que aprendo construyendo proyectos reales.',
     search: 'Buscar en el blog…',
     searchLabel: 'Buscar artículos',
     allTags: 'Todos',
@@ -84,7 +88,8 @@ const es = {
   },
   about: {
     title: 'Sobre mí',
-    description: 'Quién soy, cómo trabajo y las tecnologías que uso.',
+    description:
+      'Oscar Aragón, desarrollador full-stack en San Salvador: quién soy, cómo trabajo y las tecnologías que uso, de Python y TypeScript a Docker y Linux.',
     profile: [
       'Soy desarrollador full-stack en San Salvador. Construyo software para resolver problemas concretos: sistemas para organizaciones sociales, automatizaciones que eliminan trabajo manual y proyectos propios que corren en producción sobre servidores que administro yo mismo.',
       'Mi fuerte es el backend. Trabajo con Python, PHP, TypeScript y C#, y le doy la misma importancia a la arquitectura, las pruebas y el despliegue que a que el código funcione. También sé sentarme con personas no técnicas, entender cómo trabajan y convertir eso en una herramienta que de verdad usen.',
@@ -94,6 +99,9 @@ const es = {
   },
   contact: {
     title: 'Hablemos',
+    seoTitle: 'Contacto',
+    seoDescription:
+      'Contacta a Oscar Aragón, desarrollador full-stack en San Salvador, para proyectos freelance, oportunidades laborales o colaboraciones.',
     lead: 'Cuéntame qué necesitas y te respondo por correo. Si prefieres, escríbeme directamente.',
     direct: 'Correo directo',
     copy: 'Copiar',
@@ -180,6 +188,8 @@ const en: Dictionary = {
   projects: {
     title: 'Projects',
     intro: 'Production systems, personal projects and open source contributions.',
+    seoDescription:
+      'Projects by Oscar Aragón, full-stack developer: production systems built with React, FastAPI, .NET and Node.js, native Linux apps like Reelix, and open source contributions.',
     filters: {
       all: 'All',
       backend: 'Backend',
@@ -204,6 +214,8 @@ const en: Dictionary = {
     title: 'Blog',
     intro:
       "My personal collection of code snippets, beginner guides, tutorials and interesting things I've found on the web. I hope you find something useful here.",
+    seoDescription:
+      "Oscar Aragón's blog on web development, backend, security, Linux and self-hosting: practical tutorials and lessons from building real projects.",
     search: 'Search the blog…',
     searchLabel: 'Search posts',
     allTags: 'All',
@@ -218,7 +230,8 @@ const en: Dictionary = {
   },
   about: {
     title: 'About',
-    description: 'Who I am, how I work and the technologies I use.',
+    description:
+      'Oscar Aragón, full-stack developer in San Salvador: who I am, how I work and the technologies I use, from Python and TypeScript to Docker and Linux.',
     profile: [
       "I'm a full-stack developer based in San Salvador. I build software that solves concrete problems: systems for nonprofits, automations that remove manual work, and my own projects running in production on servers I manage myself.",
       "Backend is my strength. I work with Python, PHP, TypeScript and C#, and I care as much about architecture, testing and deployment as I do about the code working. I'm also comfortable sitting down with non-technical people, understanding how they work and turning that into a tool they actually use.",
@@ -228,6 +241,9 @@ const en: Dictionary = {
   },
   contact: {
     title: "Let's talk",
+    seoTitle: 'Contact',
+    seoDescription:
+      'Get in touch with Oscar Aragón, full-stack developer in San Salvador, about freelance projects, job opportunities or collaborations.',
     lead: "Tell me what you need and I'll reply by email. Or write to me directly.",
     direct: 'Direct email',
     copy: 'Copy',

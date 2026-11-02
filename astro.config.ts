@@ -4,9 +4,13 @@ import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 
 import { codeBlockTransformer } from './src/lib/shiki/code-block-transformer';
+import { blogSitemapData } from './src/lib/seo/sitemap';
+
+const SITE = 'https://ozkkar.dev';
+const blogSitemap = blogSitemapData(SITE);
 
 export default defineConfig({
-  site: 'https://ozkkar.dev',
+  site: SITE,
   trailingSlash: 'ignore',
   adapter: vercel(),
 
@@ -18,7 +22,13 @@ export default defineConfig({
 
   integrations: [
     // hreflang alternates are emitted per page in BaseHead (routes are translated).
-    sitemap({ filter: (page) => !page.includes('/api/') }),
+    sitemap({
+      filter: (page) => !page.includes('/api/') && !blogSitemap.exclude.has(page),
+      serialize: (item) => {
+        const lastmod = blogSitemap.lastmod.get(item.url);
+        return lastmod ? { ...item, lastmod } : item;
+      },
+    }),
   ],
 
   markdown: {

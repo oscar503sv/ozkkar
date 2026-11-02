@@ -38,6 +38,9 @@ const { redirectByBrowserLang = false } = Astro.props;
     try {
       saved = localStorage.getItem('lang');
     } catch (e) {}
+    // Never redirect crawlers: they must index the Spanish home at `/`.
+    if (/bot|crawl|spider|slurp|lighthouse|preview|facebookexternalhit/i.test(navigator.userAgent))
+      return;
     var lang = saved || (/^es/i.test(navigator.language || '') ? 'es' : 'en');
     if (lang === 'en') location.replace('/en/');
   })();

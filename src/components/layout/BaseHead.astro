@@ -3,8 +3,11 @@ import type { ImageMetadata } from 'astro';
 import { getImage } from 'astro:assets';
 
 import PreferencesScript from './PreferencesScript.astro';
-import { LOCALES, otherLang, type Lang } from '../../i18n/config';
+import JsonLd from '../seo/JsonLd.astro';
+import { DEFAULT_LANG, LOCALES, otherLang, type Lang } from '../../i18n/config';
 import { useTranslations } from '../../i18n/utils';
+import { SITE } from '../../data/site';
+import type { SchemaFactory } from '../../lib/seo/structured-data';
 import heroIllustration from '../../assets/hero-illustration.jpg';
 import '../../styles/global.css';
 
@@ -12,9 +15,21 @@ export interface SeoProps {
   title?: string;
   description?: string;
   image?: ImageMetadata;
+  imageAlt?: string;
   type?: 'website' | 'article';
   publishedTime?: Date;
+  modifiedTime?: Date;
+  tags?: string[];
   noindex?: boolean;
+  /** Overrides the canonical path (e.g. a post shown in its other-language UI). */
+  canonicalPath?: string;
+  /**
+   * Whether `alternateUrl` is a real translation of this page. When false,
+   * the language toggle still uses it but no hreflang links are emitted.
+   */
+  translated?: boolean;
+  /** schema.org nodes for this page, rendered as JSON-LD. */
+  schema?: SchemaFactory;
 }
 
 interface Props extends SeoProps {
@@ -28,9 +43,15 @@ const {
   title,
   description,
   image = heroIllustration,
+  imageAlt,
   type = 'website',
   publishedTime,
+  modifiedTime,
+  tags = [],
   noindex = false,
+  canonicalPath,
+  translated = true,
+  schema,
   alternateUrl,
   redirectByBrowserLang,
 } = Astro.props;
@@ -38,12 +59,26 @@ const {
 const t = useTranslations(lang);
 const fullTitle = title ? `${title} · ${t.meta.siteName}` : t.home.title;
 const metaDescription = description ?? t.meta.description;
-/** Absolute URL with a trailing slash, matching the sitemap. */
+
+/** Absolute URL with a trailing slash, matching internal links and the sitemap. */
 const absolute = (path: string) => new URL(path.endsWith('/') ? path : `${path}/`, Astro.site);
-const canonical = absolute(Astro.url.pathname);
-const alternate = alternateUrl ? absolute(alternateUrl) : undefined;
+const canonical = absolute(canonicalPath ?? Astro.url.pathname);
+
+// hreflang: this page, its translation, and x-default (the Spanish version).
+const hreflang =
+  !noindex && translated && alternateUrl
+    ? { [lang]: canonical, [otherLang(lang)]: absolute(alternateUrl) }
+    : undefined;
+
 const ogImage = await getImage({ src: image, width: 1200, format: 'jpg' });
 const ogImageUrl = new URL(ogImage.src, Astro.site);
+const ogImageWidth = Number(ogImage.attributes.width ?? 1200);
+const ogImageHeight = Number(
+  ogImage.attributes.height ?? Math.round((1200 * image.height) / image.width),
+);
+const ogImageAlt = imageAlt ?? t.home.heroAlt;
+
+const structuredData = schema?.({ canonical, image: ogImageUrl }) ?? [];
 ---
 
 <meta charset="utf-8" />
@@ -54,13 +89,25 @@ const ogImageUrl = new URL(ogImage.src, Astro.site);
 
 <title>{fullTitle}</title>
 <meta name="description" content={metaDescription} />
+<meta name="author" content={SITE.author} />
 <link rel="canonical" href={canonical} />
-{noindex && <meta name="robots" content="noindex" />}
+<meta
+  name="robots"
+  content={noindex ? 'noindex, follow' : 'index, follow, max-image-preview:large, max-snippet:-1'}
+/>
 
-<link rel="alternate" hreflang={lang} href={canonical} />
-{alternate && <link rel="alternate" hreflang={otherLang(lang)} href={alternate} />}
+{hreflang && (
+  <>
+    <link rel="alternate" hreflang={lang} href={hreflang[lang]} />
+    <link rel="alternate" hreflang={otherLang(lang)} href={hreflang[otherLang(lang)]} />
+    <link rel="alternate" hreflang="x-default" href={hreflang[DEFAULT_LANG]} />
+  </>
+)}
 
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+<link rel="manifest" href="/site.webmanifest" />
 <link rel="sitemap" href="/sitemap-index.xml" />
 
 <meta name="theme-color" content="#f9fafc" media="(prefers-color-scheme: light)" />
@@ -69,9 +116,34 @@ const ogImageUrl = new URL(ogImage.src, Astro.site);
 <meta property="og:type" content={type} />
 <meta property="og:site_name" content={t.meta.siteName} />
 <meta property="og:locale" content={LOCALES[lang].replace('-', '_')} />
+{hreflang && (
+  <meta property="og:locale:alternate" content={LOCALES[otherLang(lang)].replace('-', '_')} />
+)}
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={metaDescription} />
 <meta property="og:url" content={canonical} />
 <meta property="og:image" content={ogImageUrl} />
-{publishedTime && <meta property="article:published_time" content={publishedTime.toISOString()} />}
+<meta property="og:image:type" content="image/jpeg" />
+<meta property="og:image:width" content={String(ogImageWidth)} />
+<meta property="og:image:height" content={String(ogImageHeight)} />
+<meta property="og:image:alt" content={ogImageAlt} />
+{type === 'article' && (
+  <>
+    {publishedTime && (
+      <meta property="article:published_time" content={publishedTime.toISOString()} />
+    )}
+    {modifiedTime && <meta property="article:modified_time" content={modifiedTime.toISOString()} />}
+    <meta property="article:author" content={SITE.author} />
+    {tags.map((tag) => (
+      <meta property="article:tag" content={tag} />
+    ))}
+  </>
+)}
+
 <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={metaDescription} />
+<meta name="twitter:image" content={ogImageUrl} />
+<meta name="twitter:image:alt" content={ogImageAlt} />
+
+<JsonLd schema={structuredData} />

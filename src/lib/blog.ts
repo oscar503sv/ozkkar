@@ -74,6 +74,14 @@ export async function getAlternatePostUrl(listing: PostListing): Promise<string>
   return match?.url ?? postPath(listing.slug, target);
 }
 
+/** Whether the post is also written in the other language (a real translation). */
+export async function hasTranslation(listing: PostListing): Promise<boolean> {
+  const target = otherLang(listing.contentLang);
+  const key = translationKey(listing.entry);
+  const posts = await getAllPosts();
+  return posts.some((p) => parsePostId(p.id).lang === target && translationKey(p) === key);
+}
+
 /** Unique tags, most used first (ties keep first-seen order). */
 export function getAllTags(listings: PostListing[]): string[] {
   const counts = new Map<string, number>();

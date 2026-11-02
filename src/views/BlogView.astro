@@ -21,7 +21,7 @@ const posts = await getPostListings(lang);
   active="blog"
   alternateUrl={routePath('blog', otherLang(lang))}
   title={t.blog.title}
-  description={t.blog.intro}
+  description={t.blog.seoDescription}
 >
   <div class="page">
     <PageHeader title={t.blog.title} lead={t.blog.intro} />

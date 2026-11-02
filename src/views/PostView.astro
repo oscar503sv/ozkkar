@@ -6,9 +6,10 @@ import CodeCopy from '../components/blog/CodeCopy.astro';
 import Badge from '../components/ui/Badge.astro';
 import Icon from '../components/ui/Icon.astro';
 import AppLayout from '../layouts/AppLayout.astro';
-import { routePath } from '../i18n/routes';
+import { postPath, routePath } from '../i18n/routes';
 import { formatDate, useTranslations } from '../i18n/utils';
-import { getAlternatePostUrl, type PostListing } from '../lib/blog';
+import { getAlternatePostUrl, hasTranslation, type PostListing } from '../lib/blog';
+import { blogPostingSchema, breadcrumbSchema } from '../lib/seo/structured-data';
 import '../styles/prose.css';
 
 interface Props {
@@ -22,6 +23,11 @@ const t = useTranslations(lang);
 const { Content } = await render(entry);
 const alternateUrl = await getAlternatePostUrl(post);
 const showUpdated = data.updatedDate && data.updatedDate.valueOf() !== data.pubDate.valueOf();
+const translated = await hasTranslation(post);
+// A post listed in the other language's UI is the same article: point search
+// engines at the original so it isn't indexed twice.
+const canonicalPath = post.onlyIn ? postPath(post.slug, post.contentLang) : undefined;
+const contentT = useTranslations(post.contentLang);
 ---
 
 <AppLayout
@@ -31,8 +37,30 @@ const showUpdated = data.updatedDate && data.updatedDate.valueOf() !== data.pubD
   title={data.title}
   description={data.description}
   image={data.cover}
+  imageAlt={data.coverAlt}
   type="article"
   publishedTime={data.pubDate}
+  modifiedTime={data.updatedDate}
+  tags={data.tags}
+  canonicalPath={canonicalPath}
+  translated={translated && !post.onlyIn}
+  schema={({ canonical, image }) => [
+    blogPostingSchema({
+      lang: post.contentLang,
+      url: canonical,
+      title: data.title,
+      description: data.description,
+      image,
+      published: data.pubDate,
+      modified: data.updatedDate,
+      tags: data.tags,
+    }),
+    breadcrumbSchema([
+      { name: contentT.nav.home, url: new URL(routePath('home', post.contentLang), Astro.site) },
+      { name: contentT.blog.title, url: new URL(routePath('blog', post.contentLang), Astro.site) },
+      { name: data.title, url: canonical },
+    ]),
+  ]}
 >
   <article class="post" lang={post.onlyIn}>
     <a href={routePath('blog', lang)} class="back" lang={lang}>

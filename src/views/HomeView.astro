@@ -13,6 +13,7 @@ import { routePath } from '../i18n/routes';
 import { useTranslations } from '../i18n/utils';
 import { getPostListings } from '../lib/blog';
 import { getProjects } from '../lib/projects';
+import { personSchema, websiteSchema } from '../lib/seo/structured-data';
 
 interface Props {
   lang: Lang;
@@ -32,6 +33,7 @@ const latestPosts = (await getPostListings(lang)).slice(0, 3);
   active="home"
   alternateUrl={routePath('home', otherLang(lang))}
   redirectByBrowserLang={lang === 'es'}
+  schema={({ image }) => [websiteSchema(t.meta.description), personSchema(lang, image)]}
 >
   <div class="home">
     <Hero lang={lang} />
