@@ -10,7 +10,7 @@ description:
   en: 'Covers the full care cycle: patients, appointment scheduling, consultations with SOAP notes and ICD-10/ICD-11 diagnoses, and prescriptions. Four-layer Clean Architecture backend with httpOnly cookie sessions and CSRF protection, plus a platform console with full auditing and controlled account impersonation.'
 stack: [FastAPI, SQLAlchemy, PostgreSQL, React, TypeScript]
 repo: https://github.com/oscar503sv/medicore
-screenshot: ../../assets/projects/medicore.png
+screenshot: ../../assets/projects/medicore.webp
 featured: true
 stat:
   value: '218'

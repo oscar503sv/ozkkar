@@ -8,7 +8,11 @@ import { DEFAULT_LANG, LOCALES, otherLang, type Lang } from '../../i18n/config';
 import { useTranslations } from '../../i18n/utils';
 import { SITE } from '../../data/site';
 import type { SchemaFactory } from '../../lib/seo/structured-data';
-import heroIllustration from '../../assets/hero-illustration.jpg';
+import heroIllustration from '../../assets/hero-illustration.webp';
+// Latin subsets of the body and heading fonts: preloaded so text renders in
+// the final font without waiting for the stylesheet to be parsed.
+import bodyFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2?url';
+import headingFont from '@fontsource-variable/bricolage-grotesque/files/bricolage-grotesque-latin-opsz-normal.woff2?url';
 import '../../styles/global.css';
 
 export interface SeoProps {
@@ -86,6 +90,9 @@ const structuredData = schema?.({ canonical, image: ogImageUrl }) ?? [];
 <meta name="generator" content={Astro.generator} />
 
 <PreferencesScript redirectByBrowserLang={redirectByBrowserLang} />
+
+<link rel="preload" href={bodyFont} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={headingFont} as="font" type="font/woff2" crossorigin />
 
 <title>{fullTitle}</title>
 <meta name="description" content={metaDescription} />

@@ -12,6 +12,8 @@ const blogSitemap = blogSitemapData(SITE);
 export default defineConfig({
   site: SITE,
   trailingSlash: 'ignore',
+  // Fetch internal pages on hover/focus so navigation feels instant.
+  prefetch: { prefetchAll: true, defaultStrategy: 'hover' },
   adapter: vercel(),
 
   i18n: {

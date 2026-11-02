@@ -12,7 +12,7 @@ stack: [Next.js, React, TypeScript, Firebase, Tailwind CSS]
 repo: https://github.com/oscar503sv/quinielasv
 live: https://www.quinielasv.xyz/
 status: production
-screenshot: ../../assets/projects/quinielasv.png
+screenshot: ../../assets/projects/quinielasv.webp
 featured: true
 stat:
   value: 600+

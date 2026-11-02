@@ -21,7 +21,7 @@ repo: https://github.com/oscar503sv/mi-proyecto # opcional
 live: https://mi-proyecto.ozkkar.dev # opcional
 download: https://github.com/…/releases/latest # opcional
 status: production # opcional: production | development (badge en la tarjeta)
-screenshot: ../../assets/projects/mi-proyecto.png # opcional: captura horizontal
+screenshot: ../../assets/projects/mi-proyecto.webp # opcional: captura horizontal
 featured: true # opcional: aparece en "Proyectos destacados" del inicio
 stat: # opcional: pill de métrica
   value: '120'
@@ -40,6 +40,6 @@ Las capturas van en `src/assets/projects/` y las rutas son relativas a este arch
 spotlight:
   badge: { es: Ya disponible, en: Now available }
   note: { es: Licencia MIT, en: MIT license } # opcional
-  screenshot: ../../assets/projects/mi-proyecto.png
-  screenshotDark: ../../assets/projects/mi-proyecto-dark.png # opcional
+  screenshot: ../../assets/projects/mi-proyecto.webp
+  screenshotDark: ../../assets/projects/mi-proyecto-dark.webp # opcional
 ```
